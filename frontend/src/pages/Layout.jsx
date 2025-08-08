@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react"
 
 
 const Layout = () => {
-  const [sidebarBtn, setSidebarBtn] = useState(true)
+  const [sidebarBtn, setSidebarBtn] = useState(false)
 
   return (
     <div className="w-full h-screen flex relative ">

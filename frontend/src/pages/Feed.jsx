@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { dummyPostsData } from "../assets/assets"
 import Loading from "../components/Loading"
+import StoriesBar from "../components/StoriesBar"
 
 const Feed = () => {
   const [feedPosts, setFeedPosts] = useState([])
@@ -19,11 +20,11 @@ const Feed = () => {
   return !isLoading? (
     <div className="h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center gap-4 xl:gap-8">
       {/* left feed  */}
-      <div>
+      <div className="">
         {/* story */}
-        <div>
-          story
-        </div>
+        
+        <StoriesBar/>
+        
 
         {/* {Posts} */}
         <div>
@@ -32,8 +33,8 @@ const Feed = () => {
       </div>
 
       {/* Messages */}
-      <div>
-       sponser
+      <div className="">
+       message
       </div>
 
     </div>

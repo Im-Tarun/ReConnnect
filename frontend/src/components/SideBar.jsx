@@ -25,7 +25,7 @@ const SideBar = ({sidebarBtn, setSidebarBtn}) => {
                   </NavLink>
               ))}
           </div>
-          <Link to={'/create-post'} className="flex items-center justify-center gap-2 m-5 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white active:scale-95 transition-all cursor-pointer">
+          <Link to={'/create-post'} className="flex items-center justify-center gap-2 m-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white active:scale-95 transition-all cursor-pointer">
               <CirclePlus className="h-5 w-5"/>
               <p>Create Post</p>
           </Link>
