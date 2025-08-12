@@ -20,10 +20,10 @@ const Feed = () => {
   return !isLoading? (
     <div className="h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center gap-4 xl:gap-8">
       {/* left feed  */}
-      <div className="">
+      <div>
         {/* story */}
         
-        <StoriesBar/>
+          <StoriesBar/>
         
 
         {/* {Posts} */}
@@ -33,8 +33,8 @@ const Feed = () => {
       </div>
 
       {/* Messages */}
-      <div className="">
-       message
+      <div className="max-md:hidden">
+       sponser
       </div>
 
     </div>

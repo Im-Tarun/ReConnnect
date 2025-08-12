@@ -8,13 +8,14 @@ const SideBar = ({sidebarBtn, setSidebarBtn}) => {
   const {username, full_name} = dummyUserData
 
   return (
-    <div className={`w-60 xl:w-72 bg-white border-r border-gray-300 flex flex-col justify-between items-center sm:h-screen max-sm:absolute top-0 bottom-0 z-20 ${sidebarBtn? 'max-sm:translate-x-0' : 'max-sm:-translate-x-full'} transition-all duration-400 ease-in-out`}>
+    <div className={`max-w-60 xl:w-72 bg-white border-r border-gray-300 flex flex-col justify-between items-center sm:h-screen max-sm:absolute top-0 bottom-0 z-20 ${sidebarBtn? 'max-sm:translate-x-0' : 'max-sm:-translate-x-full'} transition-all duration-400 ease-in-out`}>
       <div className="w-full">
           <img src={assets.logo} alt="logo" className="w-26 ml-7 my-2 cursor-pointer" />
           <hr className="border-gray-300 mb-8"/>
           <div className="px-5 text-gray-600 space-y-1 font-medium">
               {menuItemsData.map(({to,label,Icon})=>(
                 <NavLink
+                  key={label}
                   to={to}
                   end={ to === '/'}
                   onClick={()=> setSidebarBtn(false)}
@@ -25,7 +26,8 @@ const SideBar = ({sidebarBtn, setSidebarBtn}) => {
                   </NavLink>
               ))}
           </div>
-          <Link to={'/create-post'} className="flex items-center justify-center gap-2 m-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white active:scale-95 transition-all cursor-pointer">
+          <Link to={'/create-post'} className="flex items-center justify-center gap-2 m-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white active:scale-95 transition-all cursor-pointer"
+          onClick={()=> setSidebarBtn(false)}>
               <CirclePlus className="h-5 w-5"/>
               <p>Create Post</p>
           </Link>

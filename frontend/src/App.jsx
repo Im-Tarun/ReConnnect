@@ -10,6 +10,7 @@ import CreatePost from "./pages/CreatePost"
 import {useUser} from '@clerk/clerk-react'
 import Layout from "./pages/Layout"
 import Loading from "./components/Loading"
+import {Toaster} from 'react-hot-toast'
 
 const App = () => {
   const {isLoaded, user} = useUser()
@@ -18,6 +19,7 @@ const App = () => {
   }
   return (
     <>
+    <Toaster/>
       <Routes>
         <Route path="/" element={!user ? <Login/> : <Layout/>}>
           <Route index element={<Feed/>}/>
