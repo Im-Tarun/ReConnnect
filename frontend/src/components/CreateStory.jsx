@@ -11,7 +11,7 @@ const CreateStory = ({ setshowCreateStory }) => {
     const [media, setMedia] = useState(null)
     const [previewUrl, setPreviewUrl] = useState(null)
 
-    const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));;
+    const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
     const handleMediaUpload = (e) => {
