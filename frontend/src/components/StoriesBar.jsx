@@ -25,8 +25,8 @@ const StoriesBar = () => {
 
 
     return !isLoading ? (
-        <div className="w-screen sm:w-[calc(90vw-240px)] lg:max-w-2xl pl-4  ">
-            <div className="flex gap-4 pb-5 max-md:pr-4 overflow-x-scroll no-scrollbar">
+        <div className="w-screen sm:w-[calc(90vw-145px)]  lg:w-2xl px-4 pr-0  ">
+            <div className="flex gap-3 pb-5 max-md:pr-4 w-full overflow-x-scroll no-scrollbar">
 
                 {/* add story  */}
                 <div className="rounded-lg shadow-sm min-w-30 max-h-40 aspect-[3/4] cursor-pointer hover:shadow-lg transition-all duration-200 border-2 border-dashed border-indigo-300 bg-gradient-to-b from-indigo-50 to-white"

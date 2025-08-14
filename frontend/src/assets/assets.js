@@ -127,10 +127,11 @@ export const dummyPostsData = [
         "user": dummyUserData,
         "content": "We're a small #team with a big vision — working day and night to turn dreams into products, and #products into something people love.",
         "image_urls": [
-            "https://images.pexels.com/photos/1595385/pexels-photo-1595385.jpeg"
+            "https://images.pexels.com/photos/1595385/pexels-photo-1595385.jpeg",
+            "https://images.pexels.com/photos/1619317/pexels-photo-1619317.jpeg",
         ],
         "post_type": "text_with_image",
-        "likes_count": [],
+        "likes_count": ["user_2zdFoZib5lNr614LgkONdD8WG32"],
         "createdAt": "2025-07-16T05:54:31.191Z",
         "updatedAt": "2025-07-16T05:54:31.191Z",
     },
@@ -163,7 +164,8 @@ export const dummyPostsData = [
         ],
         "post_type": "image",
         "likes_count": [
-            "user_2zdJbcAqiOX9jq2DIueBRQn0lMt"
+            "user_2zdJbcAqiOX9jq2DIueBRQn0lMt",
+            "user_2zdFoZib5lNr614LgkONdD8WG32"
         ],
         "createdAt": "2025-07-09T10:02:47.213Z",
         "updatedAt": "2025-07-09T10:09:37.075Z",
@@ -208,12 +210,23 @@ export const dummyRecentMessagesData = [
         "_id": "6878cc3c17a54e4d3748012f",
         "from_user_id": dummyUserData,
         "to_user_id": dummyUserData,
-        "text": "This is a Samsung Tablet",
+        "text": "This is a Samsung Tablet This is a Samsung Tablet",
         "message_type": "text",
         "media_url": "",
         "createdAt": "2025-07-17T10:11:08.437Z",
         "updatedAt": "2025-07-25T08:07:11.893Z",
         "seen": true
+    },
+    {
+        "_id": "686fb66c7f0dcbff63b239e7",
+        "from_user_id": dummyUser3Data,
+        "to_user_id": dummyUserData,
+        "text": "how are you",
+        "message_type": "text",
+        "media_url": "",
+        "createdAt": "2025-07-10T12:47:40.510Z",
+        "updatedAt": "2025-07-10T12:47:40.510Z",
+        "seen": false
     },
     {
         "_id": "686fb66c7f0dcbff63b239e7",

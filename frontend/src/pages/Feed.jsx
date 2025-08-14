@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
-import { dummyPostsData } from "../assets/assets"
+import { assets, dummyPostsData } from "../assets/assets"
 import Loading from "../components/Loading"
 import StoriesBar from "../components/StoriesBar"
+import PostCard from "../components/PostCard"
+import RecentMessages from "../components/RecentMessages"
 
 const Feed = () => {
   const [feedPosts, setFeedPosts] = useState([])
@@ -18,23 +20,33 @@ const Feed = () => {
   }, [])
   
   return !isLoading? (
-    <div className="h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center gap-4 xl:gap-8">
-      {/* left feed  */}
+    <div className="h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center gap-4 xl:gap-8 ">
+      {/* left side - feed  */}
       <div>
         {/* story */}
-        
-          <StoriesBar/>
-        
+          <StoriesBar/> 
 
         {/* {Posts} */}
-        <div>
-          post
+        <div className="p-4 space-y-4">
+          {feedPosts.map((post)=>(
+            <PostCard key={post._id} post={post} />
+          ))}
         </div>
       </div>
 
-      {/* Messages */}
-      <div className="max-md:hidden">
-       sponser
+      {/* right side - sponsor and Messages */}
+      <div className="max-[1180px]:hidden sticky top-0 pr-2 inset-y-full">
+        {/* sponsor  */}
+       <div className="max-w-sm bg-white text-xs p-4 inline-flex gap-2 flex-col rounded-md shadow ">
+          <h3 className="text-slate-700 font-semibold">sponsored</h3>
+          <img src={assets.sponsored_img} alt="sponsored img" className="rounded w-full h-60 " />
+          <p className="text-slate-800 text-md">Email marketing</p>
+          <p className="text-slate-500">Supercharge your marketing with a powerfull, easy-to-use platform build for result.</p>
+       </div>
+
+       {/*recent messages  */}
+        <RecentMessages/>
+      
       </div>
 
     </div>

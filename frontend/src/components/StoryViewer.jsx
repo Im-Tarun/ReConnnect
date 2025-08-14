@@ -62,7 +62,7 @@ const StoryViewer = ({ setViewStory, viewStory }) => {
 
                 {/* header  */}
                 <div className="flex items-center justify-between px-4 py-2 absolute top-0 inset-x-0 z-200">
-                    <Link to={`/profile/:${viewStory.user?._id}`} className="space-x-3 p-2 bg-black/20 backdrop-blur-lg flex rounded cursor-pointer">
+                    <Link to={`/profile/${viewStory.user?._id}`} className="space-x-3 p-2 bg-black/20 backdrop-blur-lg flex rounded cursor-pointer">
                         <img src={viewStory.user?.profile_picture} alt="dp" className="size-7 rounded-full object-cover ring-white ring" />
                         <div className="text-white flex items-center gap-1.5">
                             <span>{viewStory.user?.full_name}</span>
