@@ -291,7 +291,12 @@ export const dummyMessagesData = [
 export const dummyConnectionsData = [
     dummyUserData,
     dummyUser2Data,
-    dummyUser3Data
+    dummyUser3Data,
+    dummyUser3Data,
+    dummyUser3Data,
+    dummyUser3Data,
+    dummyUser3Data,
+    dummyUser3Data,
 ]
 
 export const dummyFollowersData = [
