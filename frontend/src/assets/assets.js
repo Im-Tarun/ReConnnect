@@ -221,7 +221,7 @@ export const dummyRecentMessagesData = [
         "_id": "686fb66c7f0dcbff63b239e7",
         "from_user_id": dummyUser3Data,
         "to_user_id": dummyUserData,
-        "text": "how are you",
+        "text": "how are you how are you how aer adfasre",
         "message_type": "text",
         "media_url": "",
         "createdAt": "2025-07-10T12:47:40.510Z",

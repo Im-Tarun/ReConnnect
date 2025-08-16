@@ -18,6 +18,7 @@ const Feed = () => {
     fetchFeedPosts()
   
   }, [])
+
   
   return !isLoading? (
     <div className="h-full overflow-y-scroll no-scrollbar py-10 xl:pr-5 flex items-start justify-center gap-4 xl:gap-8 ">
@@ -36,16 +37,19 @@ const Feed = () => {
 
       {/* right side - sponsor and Messages */}
       <div className="max-[1180px]:hidden sticky top-0 pr-2 inset-y-full">
+
+          {/*recent messages  */}
+        <RecentMessages/>
+
         {/* sponsor  */}
        <div className="max-w-sm bg-white text-xs p-4 inline-flex gap-2 flex-col rounded-md shadow ">
           <h3 className="text-slate-700 font-semibold">sponsored</h3>
-          <img src={assets.sponsored_img} alt="sponsored img" className="rounded w-full h-60 " />
+          <img src={assets.sponsored_img} alt="sponsored img" className="rounded w-full h-56 " />
           <p className="text-slate-800 text-md">Email marketing</p>
           <p className="text-slate-500">Supercharge your marketing with a powerfull, easy-to-use platform build for result.</p>
        </div>
 
-       {/*recent messages  */}
-        <RecentMessages/>
+       
       
       </div>
 

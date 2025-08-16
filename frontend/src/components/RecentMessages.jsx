@@ -18,19 +18,19 @@ const RecentMessages = () => {
   
 
   return (
-    <div className="w-full p-4 min-h-20 mt-4 rounded-md text-slate-800 bg-white max-w-sm">
+    <div className="w-full p-4 min-h-20 mb-4 rounded-md text-slate-800 bg-white max-w-sm ">
       <h1 className="font-semibold text-slate-800 mb-4"> Recent messages</h1>
-      <div className=" flex flex-col gap-2 max-h-56 overflow-y-scroll ">
+      <div className=" flex flex-col gap-2 max-h-56 overflow-y-scroll no-scrollbar ">
         {messages.map((msg)=>(
-            <Link to={`/messages/${msg.from_user_id}`} className="flex rounded shadow-sm items-start gap-2 p-3 hover:bg-slate-100 active:scale-95 transition-all" key={msg._id} >
+            <Link to={`/messages/${msg.from_user_id?._id}`} className="flex  rounded-md shadow-sm items-center gap-2 p-3 hover:bg-slate-100 active:scale-95 transition-all" key={msg._id} >
                 <img src={msg.from_user_id?.profile_picture} alt="dp" className="w-8 h-8 rounded-full object-cover" />
-                <div className="w-full">
+                <div className="flex-1 max-w-[88%]">
                     <div className="flex justify-between items-center">
                         <p className="font-medium">{msg.from_user_id.full_name}</p>
                         <p className="text-slate-600 text-[10px]">{moment(msg.createdAt).fromNow()} </p>
                     </div>
-                    <div className="flex justify-between items-center w-full">
-                        <p className="text-sm text-slate-500" style={{color: msg.seen ? "gray": "black"}}>{msg.message_type === "text" ? msg.text : "Media"}</p>
+                    <div className="flex justify-between items-center ">
+                        <p className="text-sm text-slate-500 h-5 overflow-hidden  max-w-[80%]" style={{color: msg.seen ? "gray": "black"}}>{msg.message_type === "text" ? msg.text : "Media"}</p>
                         {!msg.seen &&  <p className="text-[10px] bg-indigo-500 text-white size-5 flex items-center justify-center rounded-full" > 1 </p>}
                     </div>
 
