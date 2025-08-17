@@ -1,6 +1,6 @@
 import { MapPin, MessageCircle, Plus, UserPlus } from "lucide-react";
 import { dummyUserData } from "../assets/assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const UserCard = ({ user }) => {
@@ -16,10 +16,12 @@ const UserCard = ({ user }) => {
     const handleFriendReq = () => {
 
     }
+    
+    const navigate = useNavigate()
 
     return (
         <div className="p-4 pt-6 flex flex-col justify-between max-w-80 shadow border border-gray-200 rounded-md bg-white space-y-2">
-            <div className="flex items-center flex-col gap-2 w-full cursor-pointer3" onClick={() => navigate(`/user/` + user._id)} >
+            <div className="flex items-center flex-col gap-2 w-full cursor-pointer3" onClick={() => navigate(`/profile/` + user._id)} >
                 <img src={user.profile_picture} alt="dp" className="size-20 rounded-full cursor-pointer" />
                 <div className="flex-1 cursor-pointer" >
                     <p className="font-medium text-slate-700 ">{user.full_name}</p>

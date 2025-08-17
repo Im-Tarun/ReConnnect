@@ -19,9 +19,9 @@ const Messages = () => {
           {dummyConnectionsData.map((conn, ind) => (
             <div key={ind} className="max-w-xl  p-4 rounded-md shadow-md bg-white">
               <div className="flex items-start  gap-4">
-                <img src={conn.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer" onClick={() => navigate(`/user/` + conn._id)} />
+                <img src={conn.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer" onClick={() => navigate(`/profile/` + conn._id)} />
                 <div className="flex-1 ">
-                  <p onClick={() => navigate(`/user/` + conn._id)} className="font-medium text-slate-700 cursor-pointer">{conn.full_name}</p>
+                  <p onClick={() => navigate(`/profile/` + conn._id)} className="font-medium text-slate-700 cursor-pointer">{conn.full_name}</p>
                   <p className="text-slate-500 ">@{conn.username} </p>
                 </div>
 

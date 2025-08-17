@@ -52,7 +52,6 @@ const StoryViewer = ({ setViewStory, viewStory }) => {
 
     return (
         <div className="fixed inset-0 z-110 min-h-screen bg-black/80 backdrop-blur text-white flex items-center justify-center p-4 ">
-
             <div className=" max-w-md  h-screen flex flex-col relative" style={{ backgroundColor: viewStory.media_type === "text" ? viewStory.background_color : "black" }}>
 
                 {/* progress bar */}

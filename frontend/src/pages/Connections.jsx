@@ -67,8 +67,8 @@ const Connections = () => {
           {connectionData.find(elem => elem.label === currentTab).value.map((user, ind) => (
             <div key={ind} className="max-w-md  p-4 rounded-md shadow-md bg-white">
               <div className="flex items-start  gap-4">
-                <img src={user.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer" onClick={() => navigate(`/user/` + user._id)} />
-                <div className="flex-1 cursor-pointer" onClick={() => navigate(`/user/` + user._id)} >
+                <img src={user.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer" onClick={() => navigate(`/profile/` + user._id)} />
+                <div className="flex-1 cursor-pointer" onClick={() => navigate(`/profile/` + user._id)} >
                   <p className="font-medium text-slate-700 ">{user.full_name}</p>
                   <p className="text-slate-500 ">@{user.username} </p>
                 </div>
