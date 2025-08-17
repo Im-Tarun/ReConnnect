@@ -18,9 +18,9 @@ const RecentMessages = () => {
   
 
   return (
-    <div className="w-full p-4 min-h-20 mb-4 rounded-md text-slate-800 bg-white max-w-sm ">
-      <h1 className="font-semibold text-slate-800 mb-4"> Recent messages</h1>
-      <div className=" flex flex-col gap-2 max-h-56 overflow-y-scroll no-scrollbar ">
+    <div className="w-full p-3 min-h-20 mb-4 rounded-md text-slate-800 bg-white max-w-sm ">
+      <h1 className="font-semibold text-lg text-slate-800 mb-3"> Recent messages</h1>
+      <div className=" flex flex-col gap-2 max-h-60 overflow-y-scroll p-1 3">
         {messages.map((msg)=>(
             <Link to={`/messages/${msg.from_user_id?._id}`} className="flex  rounded-md shadow-sm items-center gap-2 p-3 hover:bg-slate-100 active:scale-95 transition-all" key={msg._id} >
                 <img src={msg.from_user_id?.profile_picture} alt="dp" className="w-8 h-8 rounded-full object-cover" />

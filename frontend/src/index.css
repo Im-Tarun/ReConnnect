@@ -11,11 +11,12 @@ html,body{
   width: 100%;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
 }
 
-.no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+.no-scrollbar::-webkit-scrollbar {
+  width: 0;   /* Safari and Chrome */
+  height: 0;  /* For horizontal scroll */
 }

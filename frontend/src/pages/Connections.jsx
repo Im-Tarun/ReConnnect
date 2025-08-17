@@ -30,7 +30,7 @@ const Connections = () => {
   }
 
   return (
-    <div className=" bg-slate-100 h-screen overflow-y-scroll no-scrollbar">
+    <div className=" bg-gradient-to-b from-slate-200 to-white h-screen overflow-y-scroll no-scrollbar">
       <div className="max-w-6xl p-6 mx-auto">
 
         {/* heading  */}
@@ -64,7 +64,7 @@ const Connections = () => {
 
         {/* /Friends  */}
         <div className="flex flex-wrap gap-6  max-md:justify-center ">
-          {connectionData.find((elem) => elem.label === currentTab).value.map((user, ind) => (
+          {connectionData.find(elem => elem.label === currentTab).value.map((user, ind) => (
             <div key={ind} className="max-w-md  p-4 rounded-md shadow-md bg-white">
               <div className="flex items-start  gap-4">
                 <img src={user.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer" onClick={() => navigate(`/user/` + user._id)} />
