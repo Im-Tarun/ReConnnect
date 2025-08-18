@@ -18,6 +18,7 @@ const Messages = () => {
         <div className="flex flex-col gap-4">
           {dummyConnectionsData.map((conn, ind) => (
             <div key={ind} className="max-w-xl  p-4 rounded-md shadow-md bg-white">
+              {/* porfile detail  */}
               <div className="flex items-start  gap-4">
                 <img src={conn.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer" onClick={() => navigate(`/profile/` + conn._id)} />
                 <div className="flex-1 ">

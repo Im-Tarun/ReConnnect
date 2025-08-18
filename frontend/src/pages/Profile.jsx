@@ -24,7 +24,7 @@ const Profile = () => {
 
 
   return (
-    <div className="relative h-full bg-gray-100 overflow-y-scroll p-6">
+    <div className="relative h-full bg-gradient-to-b from-slate-200 to-white overflow-y-scroll p-6">
       <div className="max-w-3xl mx-auto" >
 
         {/* user profile  */}
