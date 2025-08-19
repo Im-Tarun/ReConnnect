@@ -58,9 +58,8 @@ const CreatePost = () => {
                 onClick={()=>setImages(images.filter(url=> url !== img))}>
                   <X className="w-6 h-6 text-white"/>
                 </div>
-            </div>
-          ))}</div>
-           }
+            </div>))}
+          </div>}
 
           {/* add images and publish */}
           <div className="flex items-center justify-between border-t border-gray-300 pt-4">
