@@ -12,7 +12,7 @@ const UserProfileInfo = ({ user, posts, profileId, setShowEdit }) => {
         { user?.cover_photo && <img src={user?.cover_photo} alt=" user cover photo" className=" h-full w-full object-cover" />}
       </div>
 
-      <div className="relative py-4 px-8 md:px-8 bg-white ">
+      <div className="relative py-4 px-6 md:px-8 bg-white ">
       {/* dp */}
       <img src={user?.profile_picture} alt="" className="ring-4 h-32 w-32 ring-white absolute -top-16 rounded-full" />
 
@@ -43,9 +43,9 @@ const UserProfileInfo = ({ user, posts, profileId, setShowEdit }) => {
 
         {/* count  */}
         <div className="flex gap-4 pt-3 border-t border-gray-400 text-gray-800">
-          <p ><b className="text-xl pr-2">{posts.length}</b>Posts </p>
-          <p ><b className="text-xl pr-2">{user?.followers.length}</b>Followers </p>
-          <p ><b className="text-xl pr-2">{user?.following.length}</b>Followings</p>
+          <div className="max-sm:text-sm inline-flex items-baseline"><p className="sm:text-lg pr-2 font-bold">20{posts.length}</p>Posts </div>
+          <div className="max-sm:text-sm inline-flex items-baseline"><p className="sm:text-lg pr-2 font-bold">20{user?.followers.length}</p>Followers </div>
+          <div className="max-sm:text-sm inline-flex items-baseline"><p className="sm:text-lg pr-2 font-bold ">20{user?.following.length}</p>Followings</div>
         </div>
 
       </div>

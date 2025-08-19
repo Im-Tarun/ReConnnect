@@ -4,7 +4,7 @@ import { dummyPostsData, dummyUserData } from "../assets/assets"
 import UserProfileInfo from "../components/UserProfileInfo"
 import PostCard from "../components/PostCard"
 import moment from "moment"
-import { X } from "lucide-react"
+import EditProfile from "../components/EditProfile"
 
 const Profile = () => {
   const { profileId } = useParams()
@@ -24,7 +24,7 @@ const Profile = () => {
 
 
   return (
-    <div className="relative h-full bg-gradient-to-b from-slate-200 to-white overflow-y-scroll p-6">
+    <div className="relative h-full bg-gradient-to-b from-slate-200 to-white overflow-y-scroll no-scrollbar p-6">
       <div className="max-w-3xl mx-auto" >
 
         {/* user profile  */}
@@ -60,19 +60,7 @@ const Profile = () => {
         </div>}
       </div>
 
-      {showEdit && <div className="fixed inset-0 z-110 min-h-screen bg-black/80 backdrop-blur text-white flex items-center justify-center p-4 ">
-        <div className=" max-w-md  h-screen flex flex-col relative" >
-          <div className="flex items-center justify-between px-4 py-2 absolute top-0 inset-x-0 z-200">
-                    <div  className="space-x-3 p-2 bg-black/20 backdrop-blur-lg flex rounded cursor-pointer">
-                        
-                    </div>
-                    <button className="p-2 cursor-pointer" onClick={() => setShowEdit(false)}>
-                        <X />
-                    </button>
-                </div>
-        </div>
-
-      </div>}
+      {showEdit && <EditProfile setShowEdit={setShowEdit} /> }
     </div>
   )
 }
