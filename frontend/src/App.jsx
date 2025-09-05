@@ -14,15 +14,15 @@ import {Toaster} from 'react-hot-toast'
 
 const App = () => {
   const {isLoaded, user} = useUser()
-  // if( !isLoaded) {
-  //   return <Loading/>
-  // }
+  if( !isLoaded) {
+    return <Loading/>
+  }
   return (
     <>
     <Toaster/>
       <Routes>
         {/* !user ? <Login/> : */}
-        <Route path="/" element={ <Layout/>}> 
+        <Route path="/" element={!user ? <Login/> : <Layout/>}> 
           <Route index element={<Feed/>}/>
           <Route path="messages" element={<Messages/>}/>
           <Route path="messages/:userId" element={<ChatBox/>}/>
