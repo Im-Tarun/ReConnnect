@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000
 
 app.use(express.json())
 app.use(cors())
-app.use('api/inngest', serve({client: inngest, functions}))
+app.use('/api/inngest', serve({client: inngest, functions}))
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
