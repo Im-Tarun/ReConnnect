@@ -3,7 +3,7 @@ import cors from 'cors'
 import 'dotenv/config';
 import connectDB from './src/config/connectDB.js';
 import { serve } from "inngest/express";
-import { inngest, functions } from "./src/inngest"
+import { inngest, functions } from "./src/inngest/index.js"
 
 const app = express();
 const port = process.env.PORT || 3000
