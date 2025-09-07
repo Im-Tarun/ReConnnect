@@ -62,4 +62,4 @@ const syncUserDeletion = inngest.createFunction(
 )
 
 // array where all the inngest functions are stored 
-export const functions = [syncUserCreation, syncUserUpdation];
+export const functions = [syncUserCreation, syncUserUpdation, syncUserDeletion];
