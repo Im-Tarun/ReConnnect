@@ -6,7 +6,6 @@ import { serve } from "inngest/express";
 import { inngest, functions } from "./src/inngest/index.js"
 import { clerkMiddleware } from '@clerk/express'
 import userRouter from './src/Routes/user.route.js';
-import path from 'path'
 
 const app = express();
 const port = process.env.PORT || 3000
