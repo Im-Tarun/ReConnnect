@@ -17,15 +17,9 @@ app.use(clerkMiddleware())
 app.use('/api/inngest', serve({client: inngest, functions}))
 app.use('/api/user', userRouter)
 
-
-const __dirname = path.resolve();
-const frontendPath = path.join(__dirname, "..", "frontend", "dist");
-
-app.use(express.static(frontendPath));
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
-});
+app.get("/",(req, res)=>{
+  res.send("hello world")
+})
 
 app.listen(port, async() => {
   await connectDB()

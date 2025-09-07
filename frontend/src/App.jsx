@@ -7,13 +7,16 @@ import Connections from "./pages/Connections"
 import Discover from "./pages/Discover"
 import Profile from "./pages/Profile"
 import CreatePost from "./pages/CreatePost"
-import {useUser} from '@clerk/clerk-react'
+import {useAuth, useUser} from '@clerk/clerk-react'
 import Layout from "./pages/Layout"
 import Loading from "./components/Loading"
 import {Toaster} from 'react-hot-toast'
 
 const App = () => {
   const {isLoaded, user} = useUser()
+  const {getToken} = useAuth()
+  getToken().then(token=>console.log(token))
+
   if( !isLoaded) {
     return <Loading/>
   }
