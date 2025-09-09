@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
         type: String ,
         ref:'User'
     }],
-},{timestamps:true, minimize:false});
+},{timestamps:true, minimize:false, _id: false,});
 
 
 // /** @type {import('mongoose').Model} **/
