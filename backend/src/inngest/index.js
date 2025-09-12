@@ -1,5 +1,6 @@
 import {Inngest} from 'inngest'
 import User from '../models/user.model.js'
+import connectDB from '../config/connectDB.js'
 
 //client to send and recieve events
 export const inngest = new Inngest({id: "recconect"})
@@ -11,8 +12,7 @@ const syncUserCreation = inngest.createFunction(
     {event: 'clerk/user.created'},
     async ({event})=>{
         try {
-      // ensure db is connected
-      await connectDB();
+            connectDB()
 
       const { id, first_name, last_name, email_addresses, image_url, username } = event.data;
 
