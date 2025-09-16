@@ -1,4 +1,5 @@
 import imagekit from "../config/imageKit.js";
+import ConnectionModel from "../models/connection.model.js";
 import User from "../models/user.model.js"
 import fs from "fs"
 
@@ -21,7 +22,7 @@ export const getUserData = async (req, res) => {
 export const updateUserData = async (req, res) => {
     try {
         const {userId} = req.auth();
-        const {username, bio, location, full_name} = req.body;
+        let {username, bio, location, full_name} = req.body;
         const tempUser = await User.findById(userId);
         
         !username && (username = tempUser.username)
@@ -32,12 +33,12 @@ export const updateUserData = async (req, res) => {
                 username = tempUser.username
             }
         }
-
+        console.log(full_name)
         const updatedUser = {
+            full_name,
             username,
             bio,
             location,
-            full_name
         }
 
         const profile = req.files.profile && req.files.profile[0]
@@ -156,6 +157,95 @@ export const unfollowUser = async (req, res) => {
         await toUser.save()
         
         return res.status(200).json({success: true, message: "You are no longer following this user"})
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: error.message})
+    }
+}
+
+export const sendConnection = async (req, res) => {
+    try {
+        const {userId} = req.auth();
+        const {id} = req.body;
+
+        //check if user has not sent 20 req in a day
+        const last24hours = new Date(Date.now() - 24*60*60*1000) 
+        const connectionReq = await ConnectionModel.find({from_user_id: userId, createdAt: {$gt: last24hours}})
+        if(connectionReq.length >= 20){
+            return res.status(300).json({success: false, message: "Can't send more than 20 connection request in 24 hours"})
+        }
+
+        //check if there is already a connection model 
+        const connection = await ConnectionModel.findOne({
+            $or:[
+                {from_user_id: userId, to_user_id: id},
+                {from_user_id: id, to_user_id: userId},
+            ]
+        })
+
+        if(!connection){
+            await ConnectionModel.create({
+                from_user_id: userId,
+                to_user_id: id
+            })
+            return res.status(200).json({success: true, message: "Connection Req Sent Successfully"})
+        }else if(connection && connection.status === "pending"){
+            return res.status(400).json({success: false, message: "Connection Req is Pending "})
+        }
+        
+        return res.status(400).json({success: false, message: "Already connected with this User "})
+
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: error.message})
+    }
+}
+
+export const acceptConnection = async (req, res) => {
+    try {
+        const {userId} = req.auth();
+        const {id} = req.body;
+
+        const connection = await ConnectionModel.findOne({from_user_id: id, to_user_id: userId})
+
+        if(!connection){
+            return res.status(400).json({success: false, message: "Connection not found"})
+        }
+
+        const fromUser = await User.findById(userId)
+        fromUser.connections.push(id)
+        await fromUser.save()
+
+        const toUser = await User.findById(id)
+        toUser.connections.push(userId)
+        await toUser.save()
+
+        connection.status = "accepted"
+        await connection.save()
+
+        return res.status(200).json({success: true, message: "Connection accepted successfully"})
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: error.message})
+    }
+    
+}
+
+export const getAllConnections = async (req, res) => {
+    try {
+        const {userId} = req.auth()
+        const user = await User.findById(userId).populate('connenctions followers followings')
+
+        const connections = user.connections
+        const followers = user.followers
+        const followings = user.followings
+        
+        const pendingConnections = (await ConnectionModel.find({to_user_id: userId}).populate("from_user_id")).map(req=>req.from_user_id)
+
+        return res.status(200).json({success: true, connections, followers, followings, pendingConnections })
 
     } catch (error) {
         console.log(error)
