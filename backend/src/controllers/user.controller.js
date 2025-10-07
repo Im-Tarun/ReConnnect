@@ -1,5 +1,6 @@
 import imagekit from "../config/imageKit.js";
 import ConnectionModel from "../models/connection.model.js";
+import PostModel from "../models/post.model.js";
 import User from "../models/user.model.js"
 import fs from "fs"
 
@@ -248,6 +249,23 @@ export const getAllConnections = async (req, res) => {
         })
 
         return res.status(200).json({success: true, connections, followers, followings, pendingConnections })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: error.message})
+    }
+}
+
+export const getUserProfile = async (req, res) => {
+    try {
+        const {profileId } = req.body
+        const profile = await User.findById(profileId)
+        if(!profile){
+            return res.status(404).json({success: false, message: "Profile not found."})
+        }
+        const posts = await PostModel.find({user: profileId}).populate("user").sort({createdAt: -1})
+
+        return res.status(200).json({success: true, profile, posts})
 
     } catch (error) {
         console.log(error)

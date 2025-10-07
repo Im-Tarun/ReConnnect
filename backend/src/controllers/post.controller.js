@@ -35,14 +35,14 @@ export const addPost = async (req, res) => {
             )
         }
 
-        await PostModel.create({
+        const newPost = await PostModel.create({
             user: userId,
             image_urls,
             post_type,
             content,
         });
 
-        return res.status(200).json({success: true, message: "Post created Successfully"})
+        return res.status(200).json({success: true, message: "Post created Successfully.", newPost})
 
     } catch (error) {
         console.log(error)
@@ -59,7 +59,6 @@ export const getFeedPost = async (req, res) => {
         const allUserIds = [userId, ...user.followings, ...user.connections]
         const allPost = await PostModel.find({user: {$in: allUserIds}}).populate('user').sort({createdAt: -1})
         
-
         return res.status(200).json({success: true, allPost})
 
     } catch (error) {

@@ -7,6 +7,7 @@ import { inngest, functions } from "./src/inngest/index.js"
 import { clerkMiddleware } from '@clerk/express'
 import userRouter from './src/routes/user.route.js';
 import postRouter from './src/routes/post.route.js';
+import storyRouter from './src/routes/story.route.js';
 
 const app = express();
 const port = process.env.PORT || 3000
@@ -17,6 +18,7 @@ app.use(clerkMiddleware())
 app.use('/api/inngest', serve({client: inngest, functions}))
 app.use('/api/user', userRouter)
 app.use('/api/post', postRouter)
+app.use('/api/story', storyRouter)
 
 app.get("/",(req, res)=>{
   res.send("hello world")
