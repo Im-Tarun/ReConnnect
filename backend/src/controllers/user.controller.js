@@ -46,12 +46,12 @@ export const updateUserData = async (req, res) => {
 
         if(profile){
             const buffer = fs.readFileSync(profile.path)
-            const respose = await imagekit.upload({
+            const response = await imagekit.upload({
                 file: buffer,
                 fileName: profile.originalname
             })
             const url = imagekit.url({
-                path: respose.filePath,
+                path: response.filePath,
                 transformation:[
                     {quality: 'auto'},
                     {format: 'webp'},
@@ -237,13 +237,15 @@ export const acceptConnection = async (req, res) => {
 export const getAllConnections = async (req, res) => {
     try {
         const {userId} = req.auth()
-        const user = await User.findById(userId).populate('connenctions followers followings')
+        const user = await User.findById(userId).populate('connections followers followings')
 
         const connections = user.connections
         const followers = user.followers
         const followings = user.followings
         
-        const pendingConnections = (await ConnectionModel.find({to_user_id: userId}).populate("from_user_id")).map(req=>req.from_user_id)
+        const pendingConnections = (await ConnectionModel.find({to_user_id: userId}).populate("from_user_id")).map(req=>{
+            if(req.status === "pending") return req.from_user_id;
+        })
 
         return res.status(200).json({success: true, connections, followers, followings, pendingConnections })
 

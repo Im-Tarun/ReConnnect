@@ -51,7 +51,6 @@ const userSchema = new mongoose.Schema({
 },{timestamps:true, minimize:false, _id: false,});
 
 
-// /** @type {import('mongoose').Model} **/
-const User = new mongoose.model("User", userSchema)
+const User = mongoose.model("User", userSchema)
 
 export default User
