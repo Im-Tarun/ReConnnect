@@ -1,4 +1,5 @@
 import imagekit from "../config/imageKit.js";
+import { inngest } from "../inngest/index.js";
 import ConnectionModel from "../models/connection.model.js";
 import PostModel from "../models/post.model.js";
 import User from "../models/user.model.js"
@@ -186,17 +187,23 @@ export const sendConnection = async (req, res) => {
         })
 
         if(!connection){
-            await ConnectionModel.create({
+            const newConnection = await ConnectionModel.create({
                 from_user_id: userId,
                 to_user_id: id
             })
+
+            //send email remainder for new connection and if not accepted email remainder again after 24 hour 
+            await inngest.send({
+                name: "app/connection-request",
+                data: {connectionId: newConnection._id}
+            })
+
             return res.status(200).json({success: true, message: "Connection Req Sent Successfully"})
         }else if(connection && connection.status === "pending"){
             return res.status(400).json({success: false, message: "Connection Req is Pending "})
         }
-        
-        return res.status(400).json({success: false, message: "Already connected with this User "})
 
+        return res.status(400).json({success: false, message: "Already connected with this User "})
 
     } catch (error) {
         console.log(error)

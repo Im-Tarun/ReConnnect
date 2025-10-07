@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import connectDB from "../config/connectDB.js";
 import sendEmail from "../config/nodeMailer.js";
 import ConnectionModel from "../models/connection.model.js";
+import StoryModel from "../models/story.model.js";
 
 //client to send and recieve events
 export const inngest = new Inngest({ id: "recconect" });
@@ -132,5 +133,23 @@ const connectionReminder = inngest.createFunction(
   }
 );
 
+//ingest function to delete stroy from db after 24 hours 
+const deleteStory24Hour = inngest.createFunction(
+  {id : 'delete-story'},
+  {event: "app/story-delete"},
+  async ({event, step}) => {
+
+    const {storyId} = event.data
+    const in24Hours = new Date(Date.now() + 24 * 60 * 60 * 1000)
+
+    await step.sleepUntil("wait-24-hours", in24Hours)
+    await step.run("delete-story", async () => {
+      await StoryModel.findByIdAndDelete(storyId)
+      return {message: "story deleted."}
+    })
+
+  }
+)
+
 // array where all the inngest functions are stored
-export const functions = [syncUserCreation, syncUserUpdation, syncUserDeletion, connectionReminder];
+export const functions = [syncUserCreation, syncUserUpdation, syncUserDeletion, connectionReminder, deleteStory24Hour];
