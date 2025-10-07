@@ -1,5 +1,5 @@
 import express from 'express'
-import { acceptConnection, discoverUser, followUser, getAllConnections, getUserData, getUserProfile, sendConnection, unfollowUser, updateUserData } from '../controllers/user.controller.js';
+import { acceptConnection, discoverUser, followUser, getAllConnections, getRecentMessages, getUserData, getUserProfile, sendConnection, unfollowUser, updateUserData } from '../controllers/user.controller.js';
 import { protect } from '../middlewares/auth.js';
 import { upload } from '../config/multer.js';
 
@@ -14,6 +14,7 @@ userRouter.post('/connect', protect,  sendConnection)
 userRouter.post('/accept', protect,  acceptConnection)
 userRouter.get('/connections', protect,  getAllConnections)
 userRouter.get('/profile', protect,  getUserProfile)
+userRouter.get("/recentMessages", protect, getRecentMessages )
 
 
 export default userRouter

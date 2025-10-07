@@ -1,6 +1,7 @@
 import imagekit from "../config/imageKit.js";
 import { inngest } from "../inngest/index.js";
 import ConnectionModel from "../models/connection.model.js";
+import MessageModel from "../models/message.model.js";
 import PostModel from "../models/post.model.js";
 import User from "../models/user.model.js"
 import fs from "fs"
@@ -278,4 +279,18 @@ export const getUserProfile = async (req, res) => {
         console.log(error)
         return res.status(500).json({success: false, message: error.message})
     }
+}
+ 
+export const getRecentMessages = async (req, res ) => {
+    try {
+        const {userId} = req.auth()
+
+        const messages = await MessageModel.find({to_user_id: userId}).populate("to_user_id from_user_id").sort({createdAt : -1})
+
+        return res.status(200).json({success: true , messages})
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: error.message });
+    }
+    
 }
