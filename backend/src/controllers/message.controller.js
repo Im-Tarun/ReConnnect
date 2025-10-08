@@ -1,6 +1,6 @@
 import fs from "fs";
-import imagekit from "../config/imageKit";
-import MessageModel from "../models/message.model";
+import imagekit from "../config/imageKit.js";
+import MessageModel from "../models/message.model.js";
 
 const connections = {};
 
@@ -33,7 +33,7 @@ export const sendMessage = async (req, res) => {
   try {
     const { userId } = req.auth();
     const { to_user_id, text } = req.body;
-    const { image } = req.file;
+    const image  = req.file;
 
     let media_url = "";
     const message_type = image ? "image" : "text";
