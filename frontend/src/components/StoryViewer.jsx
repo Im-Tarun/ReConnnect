@@ -1,5 +1,5 @@
 import { BadgeCheck, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 
@@ -7,15 +7,14 @@ const StoryViewer = ({ setViewStory, viewStory }) => {
     if (!viewStory) return null
 
     const [progressBar, setProgressBar] = useState(0)
-
+    const videoRef = useRef()
 
     useEffect(() => {
       let timer, progressInterval;
 
         if (viewStory.media_type !== 'video') {
-
             setProgressBar(0)
-            const duration =5_000;
+            const duration = 8_000;
             const setTime = 100;
             let progress = 0;
 
@@ -27,6 +26,10 @@ const StoryViewer = ({ setViewStory, viewStory }) => {
             timer = setTimeout(() => {
                 setViewStory(null)
             }, duration); 
+
+        }else{
+            // setProgressBar(videoRef.current.currentTime)
+            console.log(videoRef.current.currentTime);
         }
     
       return () => {
@@ -44,7 +47,7 @@ const StoryViewer = ({ setViewStory, viewStory }) => {
                 );
             case 'video':
                 return (
-                    <video src={viewStory.media_url} onEnded={() => setViewStory(null)} autoPlay controls className="object-contain max-h-full  object-center w-full " />
+                    <video ref={videoRef} src={viewStory.media_url} onEnded={() => setViewStory(null)} autoPlay controls className="object-contain max-h-full  object-center w-full " />
                 )
             default: return <p className="p-4 text-lg">{viewStory.content}</p>
         }
@@ -52,7 +55,7 @@ const StoryViewer = ({ setViewStory, viewStory }) => {
 
     return (
         <div className="fixed inset-0 z-110 min-h-screen bg-black/80 backdrop-blur text-white flex items-center justify-center p-4 ">
-            <div className=" max-w-md  h-screen flex flex-col relative" style={{ backgroundColor: viewStory.media_type === "text" ? viewStory.background_color : "black" }}>
+            <div className="w-md  h-screen flex flex-col relative" style={{ backgroundColor: viewStory.media_type === "text" ? viewStory.background_color : "black" }}>
 
                 {/* progress bar */}
                 <div className="fixed top-0 inset-x-0 h-1 bg-gray-500 z-200">

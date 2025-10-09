@@ -14,7 +14,7 @@ const UserProfileInfo = ({ user, posts, profileId, setShowEdit }) => {
 
       <div className="relative py-4 px-6 md:px-8 bg-white ">
       {/* dp */}
-      <img src={user?.profile_picture} alt="" className="ring-4 h-32 w-32 ring-white absolute -top-16 rounded-full" />
+      <img src={user?.profile_picture} alt="" className="ring-4 h-32 w-32 ring-white absolute -top-16 rounded-full object-cover" />
 
       {/* profile name and edit  */}
       <div className="w-full pt-16 md:pt-0 md:pl-36 flex flex-col gap-4">
@@ -43,9 +43,9 @@ const UserProfileInfo = ({ user, posts, profileId, setShowEdit }) => {
 
         {/* count  */}
         <div className="flex gap-4 pt-3 border-t border-gray-400 text-gray-800">
-          <div className="max-sm:text-sm inline-flex items-baseline"><p className="sm:text-lg pr-2 font-bold">20{posts.length}</p>Posts </div>
-          <div className="max-sm:text-sm inline-flex items-baseline"><p className="sm:text-lg pr-2 font-bold">20{user?.followers.length}</p>Followers </div>
-          <div className="max-sm:text-sm inline-flex items-baseline"><p className="sm:text-lg pr-2 font-bold ">20{user?.following.length}</p>Followings</div>
+          <div className="max-sm:text-sm inline-flex items-baseline"><p className="sm:text-lg pr-2 font-bold">{posts.length}</p>Posts </div>
+          <div className="max-sm:text-sm inline-flex items-baseline"><p className="sm:text-lg pr-2 font-bold">{user?.followers.length}</p>Followers </div>
+          <div className="max-sm:text-sm inline-flex items-baseline"><p className="sm:text-lg pr-2 font-bold ">{user?.followings.length}</p>Followings</div>
         </div>
 
       </div>

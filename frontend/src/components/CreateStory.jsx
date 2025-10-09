@@ -1,8 +1,10 @@
 import { ArrowLeft, Sparkle, TextIcon, Upload } from "lucide-react"
 import { useState } from "react"
 import toast from "react-hot-toast"
+import api from "../api/axios.js"
+import { useAuth } from "@clerk/clerk-react"
 
-const CreateStory = ({ setshowCreateStory }) => {
+const CreateStory = ({ setshowCreateStory, fetchStories }) => {
     const bgColors = ["#7c3aed", "#db2777", "#e11d48", "#ca8a04", "#0d9488", "#4f46e5"]
 
     const [mode, setMode] = useState("text")
@@ -10,14 +12,34 @@ const CreateStory = ({ setshowCreateStory }) => {
     const [text, setText] = useState("")
     const [media, setMedia] = useState(null)
     const [previewUrl, setPreviewUrl] = useState(null)
+    const {getToken} = useAuth()
 
-    const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
+    const max_video_duration = 60; //sec
+    const max_video_size = 30; //mb
 
     const handleMediaUpload = (e) => {
-
-        const file = e.target.files?.[0]
+        const file = e.target.files?.[0];
         if (file) {
+            if(file.type.startsWith("video")){
+                if(file.size > max_video_size * 1024 *1024){
+                    toast.error(`video size exceeded ${max_video_size} MB`)
+                    setMedia(null)
+                    setPreviewUrl(null)
+                    return;
+                }
+                const video = document.createElement("video")
+                video.src = URL.createObjectURL(file)
+                video.preload = 'metadata'
+                video.onloadedmetadata = () =>{
+                    window.URL.revokeObjectURL(video.src)
+                    if(video.duration> max_video_duration){
+                        toast.error(`video duration exceeded ${max_video_size} sec`)
+                        setMedia(null)
+                        setPreviewUrl(null)
+                        return;
+                    }
+                }
+            }
             setMedia(file)
             setPreviewUrl(URL.createObjectURL(file))
         }
@@ -26,9 +48,27 @@ const CreateStory = ({ setshowCreateStory }) => {
 
     const handleCreateStory = async () => {
         try {
-            await wait(2000)
-        } catch (error) {
+            const mediaType = mode === "media" ? media?.type.startsWith("image") ? "image" : "video" : "text";
+            if(mediaType === "text" && text.length < 1 ) return toast.error("Please enter some text.");
 
+            const storyData = new FormData();
+
+            storyData.append("content", text)
+            storyData.append("media_type", mediaType )
+            storyData.append("background_color", background )
+            storyData.append("media", media )
+            
+            const {data} = await api.post("/api/story/add", storyData ,{
+                headers:{Authorization:`Bearer ${await getToken()}`}
+            })
+
+            if(data?.success){
+                fetchStories()
+            }
+
+        } catch (error) {
+            console.log(error)
+            toast.error("Some error occurred")
         } finally {
             setshowCreateStory(false)
             setText("")
@@ -41,7 +81,6 @@ const CreateStory = ({ setshowCreateStory }) => {
         <div className="fixed inset-0 z-110 min-h-screen bg-black/80 backdrop-blur text-white flex items-center justify-center p-4 ">
             {/* container */}
             <div className="w-full max-w-md space-y-3">
-
                 {/* header  */}
                 <div className="flex items-center justify-between">
                     <button className="p-2 cursor-pointer " onClick={() => setshowCreateStory(false)}>
@@ -72,7 +111,7 @@ const CreateStory = ({ setshowCreateStory }) => {
                 {/* background color change  */}
                 <div className="flex gap-2 ">
                     {bgColors.map((color) => (
-                        <div key={color} style={{ backgroundColor: color }} className={`rounded-full ring-2 w-6 h-6 ${background !== color ? "ring-white/60" : "ring-white"}`}
+                        <div key={color} style={{ backgroundColor: color }} className={`rounded-full ring-2 w-6 h-6 ${background !== color ? "ring-white/10" : "ring-white"}`}
                             onClick={() => setBackground(color)}
                         ></div>
                     ))}

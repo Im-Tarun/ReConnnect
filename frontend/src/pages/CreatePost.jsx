@@ -1,25 +1,49 @@
 import { useState } from "react";
-import { dummyUserData } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { Image, X } from "lucide-react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useAuth } from "@clerk/clerk-react";
+import api from "../api/axios.js";
 
 
 const CreatePost = () => {
   const [content, setContent] = useState('')
   const [images, setImages] = useState([])
-  
   const [loading, setLoading] = useState(false)
+  const {getToken} = useAuth()
+  const navigate = useNavigate()
 
-  const user = dummyUserData
+  const user = useSelector((state)=> state.user.value)
 
   const handleCreatePost = async()=>{
-    setContent('')
-    setImages([])
-    return true
+    if(!images.length && !content) return toast.error("Please add an image or text")
+      try {
+      setLoading(true)
+      const postType = images.length && content ? "text_with_image" : images.length ? "image" : "text"
+      const token = await getToken()
+
+      const formData = new FormData()
+      formData.append("content", content)
+      formData.append("post_type", postType)
+      images.map((img)=> formData.append("images", img))
+
+      const {data} = await api.post("/api/post/add",formData, {
+        headers:{Authorization: `Bearer ${token}`}
+      })
+
+      if(data.success){
+        navigate('/')
+      }
+
+
+    } catch (error) {
+      console.log(error)
+    }finally{
+      setLoading(false)
+    }
   }
 
-  const navigate = useNavigate()
 
   return (
     <div className="bg-gradient-to-b from-slate-200 to-white min-h-screen">
@@ -34,10 +58,10 @@ const CreatePost = () => {
         <div className=" max-w-xl bg-white p-6 py-4 shadow rounded">
           {/* profile info  */}
           <div onClick={() => navigate(`/profile`)} className="flex gap-2">
-            <img src={user.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer" />
+            <img src={user?.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer object-cover" />
             <div className="flex-1 ">
-              <p className="font-medium text-slate-700 cursor-pointer">{user.full_name}</p>
-              <p className="text-slate-500 ">@{user.username} </p>
+              <p className="font-medium text-slate-700 cursor-pointer">{user?.full_name}</p>
+              <p className="text-slate-500 ">@{user?.username} </p>
             </div>
           </div>
 

@@ -6,6 +6,6 @@ import { addUserStory, getAllStories } from '../controllers/story.controller.js'
 const storyRouter = express.Router()
 
 storyRouter.post("/add", upload.single("media"), protect, addUserStory)
-storyRouter.get("/getAll", protect, getAllStories)
+storyRouter.get("/get", protect, getAllStories)
 
 export default storyRouter

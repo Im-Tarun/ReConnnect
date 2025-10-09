@@ -35,8 +35,7 @@ export const updateUserData = async (req, res) => {
             if(user){
                 username = tempUser.username
             }
-        }
-        console.log(full_name)
+        } 
         const updatedUser = {
             full_name,
             username,
@@ -266,7 +265,7 @@ export const getAllConnections = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
     try {
-        const {profileId } = req.body
+        const {profileId} = req.body
         const profile = await User.findById(profileId)
         if(!profile){
             return res.status(404).json({success: false, message: "Profile not found."})

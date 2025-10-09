@@ -11,11 +11,27 @@ import {useAuth, useUser} from '@clerk/clerk-react'
 import Layout from "./pages/Layout"
 import Loading from "./components/Loading"
 import {Toaster} from 'react-hot-toast'
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { fetchUser } from "./features/user/userSlice.js"
 
 const App = () => {
   const {isLoaded, user} = useUser()
   const {getToken} = useAuth()
-  getToken().then(token=>console.log(token))
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+       if(user){ 
+        const token = await getToken()
+        dispatch(fetchUser(token))
+      }
+    }
+    fetchData()
+
+  }, [user, getToken, dispatch])
+  
 
   if( !isLoaded) {
     return <Loading/>
@@ -25,7 +41,7 @@ const App = () => {
     <Toaster/>
       <Routes>
         {/* !user ? <Login/> : */}
-        <Route path="/" element={ !user ? <Login/> :<Layout/>}> 
+        <Route path="/" element={!user ? <Login/> : <Layout/>}> 
           <Route index element={<Feed/>}/>
           <Route path="messages" element={<Messages/>}/>
           <Route path="messages/:userId" element={<ChatBox/>}/>

@@ -5,22 +5,33 @@ import { Plus } from "lucide-react"
 import moment from "moment"
 import CreateStory from "./CreateStory"
 import StoryViewer from "./StoryViewer"
+import { useAuth } from "@clerk/clerk-react"
+import api from "../api/axios.js"
 
 const StoriesBar = () => {
     const [stories, setStories] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [showCreateStory, setshowCreateStory] = useState(false)
     const [viewStory, setViewStory] = useState(null)
-    const [storyViews, setStoryViews] = useState(0)
+    const [storyViews, setStoryViews] = useState('')
+    const {getToken} = useAuth()
 
 
-    const fetchStories = () => {
-        setStories(dummyStoriesData)
-        setIsLoading(false)
+    const fetchStories = async () => {
+        try {
+            const {data} = await api.get("/api/story/get",{
+                headers:{Authorization: `Bearer ${await getToken()}`}
+            })
+            if (data?.success){
+                setStories(data.stories)
+                setIsLoading(false)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
     useEffect(() => {
         fetchStories()
-
     }, [])
 
 
@@ -40,7 +51,7 @@ const StoriesBar = () => {
                 </div>
 
                 {/* create story  */}
-                {showCreateStory && <CreateStory setshowCreateStory={setshowCreateStory} />}
+                {showCreateStory && <CreateStory setshowCreateStory={setshowCreateStory} fetchStories={fetchStories} />}
 
                 {/* all stories  */}
                 {stories.map((story) => (
@@ -48,7 +59,7 @@ const StoriesBar = () => {
                         onClick={() => setViewStory(story)}>
 
                         <img src={story.user.profile_picture} alt="dp" className="absolute size-8 top-3 left-3 z-10 rounded-full  ring ring-gray-600 " />
-                        <p className="absolute top-18 let-3 z-10 text-white/80 text-sm truncate max-w-24">{story.content}</p>
+                        <p className="absolute top-18 let-3 z-10 text-white/80 text-sm truncate max-w-24 pl-4">{story.content}</p>
                         <p className="absolute bottom-1 text right-3 text-white z-10 text-xs"> {moment(story.createdAt).fromNow()}</p>
                         {
                             story.media_type !== 'text' && (

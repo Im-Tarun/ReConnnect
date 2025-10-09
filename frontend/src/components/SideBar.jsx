@@ -1,11 +1,12 @@
 import { Link, NavLink } from "react-router-dom"
-import { assets, dummyUserData, menuItemsData } from "../assets/assets"
+import { assets, menuItemsData } from "../assets/assets"
 import { CirclePlus, LogOut } from "lucide-react"
 import {UserButton, useClerk} from "@clerk/clerk-react"
+import { useSelector } from "react-redux"
 
 const SideBar = ({sidebarBtn, setSidebarBtn}) => {
   const {signOut} = useClerk()
-  const {username, full_name} = dummyUserData
+  const user = useSelector((state)=> state.user.value)
 
   return (
     <div className={`max-w-60 xl:w-72 bg-white border-r border-gray-300 flex flex-col justify-between items-center sm:h-screen max-sm:absolute top-0 bottom-0 z-20 ${sidebarBtn? 'max-sm:translate-x-0' : 'max-sm:-translate-x-full'} transition-all duration-400 ease-in-out`}>
@@ -36,8 +37,8 @@ const SideBar = ({sidebarBtn, setSidebarBtn}) => {
         <div className="flex gap-2 items-center cursor-pointer">
           <UserButton />
           <div>
-            <h2 className="text-sm font-medium">{full_name}</h2>
-            <p className="text-xs font-bold text-gray-500">@{username}</p>
+            <h2 className="text-sm font-medium">{user?.full_name}</h2>
+            <p className="text-xs font-bold text-gray-500">@{user?.username}</p>
           </div>
         </div>
         <LogOut onClick={signOut} className="w-4.5 text-gray-400 hover:to-gray-700 transition cursor-pointer"/>
