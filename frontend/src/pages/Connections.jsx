@@ -1,19 +1,12 @@
 import { useNavigate } from "react-router-dom"
-import {
-  dummyConnectionsData as friends,
-  dummyFollowersData as followers,
-  dummyPendingConnectionsData as pendingFriends,
-  dummyFollowingData as followings
-} from "../assets/assets"
 import { MessageSquare, UserCheck, UserPlus, UserRoundPen, Users } from "lucide-react"
 import { useState } from "react"
 
 
-
 const Connections = () => {
   const [currentTab, setCurrentTab] = useState("Followers")
-
   const navigate = useNavigate()
+  const {followers, followings, pendingConnections: pendingFriends, connections: friends} = useSelector((state)=> state.connections)
 
   const connectionData = [
     { label: "Followers", value: followers, icon: Users },
@@ -22,6 +15,7 @@ const Connections = () => {
     { label: "Friends", value: friends, icon: UserPlus }
   ]
 
+  // console.log(pendingFriends, followers);
   const handleAccept = ()=>{
 
   }
@@ -62,21 +56,21 @@ const Connections = () => {
         </div>
 
 
-        {/* /Friends  */}
+        {/* following, Friends  */}
         <div className="flex flex-wrap gap-6  max-md:justify-center ">
           {connectionData.find(elem => elem.label === currentTab).value.map((user, ind) => (
-            <div key={ind} className="max-w-md  p-4 rounded-md shadow-md bg-white">
+            <div key={ind} className="max-w-md w-full p-4 rounded-md shadow-md bg-white">
               <div className="flex items-start  gap-4">
-                <img src={user.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer" onClick={() => navigate(`/profile/` + user._id)} />
-                <div className="flex-1 cursor-pointer" onClick={() => navigate(`/profile/` + user._id)} >
-                  <p className="font-medium text-slate-700 ">{user.full_name}</p>
-                  <p className="text-slate-500 ">@{user.username} </p>
+                <img src={user?.profile_picture} alt="dp" className="size-12 rounded-full object-cover cursor-pointer" onClick={() => navigate(`/profile/` + user?._id)} />
+                <div className="flex-1 cursor-pointer" onClick={() => navigate(`/profile/` + user?._id)} >
+                  <p className="font-medium text-slate-700 ">{user?.full_name}</p>
+                  <p className="text-slate-500 ">@{user?.username} </p>
                 </div>
               </div>
-              <p className="text-slate-600 mt-1 p-1">{user.bio}</p>
+              <p className="text-slate-600 mt-1 p-1">{user?.bio}</p>
 
               {/* message button  */}
-              {currentTab === "Friends" && <button onClick={() => navigate('/messages/' + user._id)} className="flex items-center justify-center bg-slate-200 hover:bg-slate-300 w-full rounded py-2 gap-1 active:scale-95 transition">
+              {currentTab === "Friends" && <button onClick={() => navigate('/messages/' + user?._id)} className="flex items-center justify-center bg-slate-200 hover:bg-slate-300 w-full rounded py-2 gap-1 active:scale-95 transition">
                 <MessageSquare className="size-4.5 text-gray-800" />
                 <span>Message</span>
               </button>}

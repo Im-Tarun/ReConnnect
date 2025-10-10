@@ -251,9 +251,15 @@ export const getAllConnections = async (req, res) => {
         const followers = user.followers
         const followings = user.followings
         
-        const pendingConnections = (await ConnectionModel.find({to_user_id: userId}).populate("from_user_id")).map(req=>{
-            if(req.status === "pending") return req.from_user_id;
-        })
+        // const pendingConnections = (await ConnectionModel.find({to_user_id: userId}).populate("from_user_id")).flatMap(req=>{
+        //     if(req.status === "pending") return req.from_user_id 
+        //     else return [];
+        // })
+        const pendingConnections = (await ConnectionModel
+            .find({ to_user_id: userId })
+            .populate("from_user_id"))
+            .filter(req => req.status === "pending")
+            .map(req => req.from_user_id);
 
         return res.status(200).json({success: true, connections, followers, followings, pendingConnections })
 

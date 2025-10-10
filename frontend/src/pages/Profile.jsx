@@ -11,6 +11,7 @@ import { useSelector } from "react-redux"
 
 const Profile = () => {
   const currentUser = useSelector((state)=> state.user.value)
+  
   const { profileId } = useParams()
   const [user, setUser] = useState(null)
   const [activeTab, setActiveTab] = useState('posts')
