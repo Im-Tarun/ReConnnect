@@ -1,25 +1,43 @@
-import { useState } from "react"
-import { dummyConnectionsData } from "../assets/assets"
+import { useEffect, useState } from "react"
 import { Search } from "lucide-react"
 import UserCard from "../components/UserCard"
 import Loading from "../components/Loading"
+import api from "../api/axios.js"
+import { useAuth } from "@clerk/clerk-react"
+import toast from "react-hot-toast"
+import { useDispatch } from "react-redux"
+import { fetchUser } from "../features/user/userSlice"
 
 const Discover = () => {
 
   const [searchInput, setSearchInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [users, setUsers] = useState(dummyConnectionsData)
+  const [users, setUsers] = useState([])
+  const {getToken} = useAuth()
+  const dispatch = useDispatch()
 
-  const handleSearch = (e) => {
+  const handleSearch = async(e) => {
     if (e.key === "Enter") {
-      setUsers([])
-      setLoading(true)
-      setTimeout(() => {
-        setUsers(dummyConnectionsData)
+      try {
+        setUsers([])
+        setLoading(true)
+        const {data} = await api.post("/api/user/discover",{input: e.target.value},{
+          headers: {Authorization: `Bearer ${await getToken()}`}
+        })
+        
+        data.success ? setUsers(data.users) : toast.error(data.message)
+        
+      } catch (error) {
+        console.log(error)
+      } finally{
         setLoading(false)
-      }, 5000);
-    }
-  }
+      }
+  }}
+
+  useEffect(() => {
+    getToken().then(token=>dispatch(fetchUser(token)))
+  }, [])
+  
 
   return (
     <div className="h-screen overflow-y-scroll no-scrollbar bg-gradient-to-b from-slate-200 to-white">

@@ -31,11 +31,10 @@ const CreatePost = () => {
       const {data} = await api.post("/api/post/add",formData, {
         headers:{Authorization: `Bearer ${token}`}
       })
-
+      
       if(data.success){
         navigate('/')
       }
-
 
     } catch (error) {
       console.log(error)

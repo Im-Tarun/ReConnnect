@@ -1,12 +1,19 @@
 import { useNavigate } from "react-router-dom"
 import { MessageSquare, UserCheck, UserPlus, UserRoundPen, Users } from "lucide-react"
-import { useState } from "react"
-
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import api from "../api/axios.js";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import { fetchConnections } from "../features/connections/connectionsSlice.js";
+import Loading from "../components/Loading.jsx";
 
 const Connections = () => {
   const [currentTab, setCurrentTab] = useState("Followers")
   const navigate = useNavigate()
-  const {followers, followings, pendingConnections: pendingFriends, connections: friends} = useSelector((state)=> state.connections)
+  const { followers, followings, pendingConnections: pendingFriends, connections: friends } = useSelector((state) => state.connections)
+  const { getToken } = useAuth()
+  const dispatch = useDispatch()
 
   const connectionData = [
     { label: "Followers", value: followers, icon: Users },
@@ -16,14 +23,47 @@ const Connections = () => {
   ]
 
   // console.log(pendingFriends, followers);
-  const handleAccept = ()=>{
-
+  const handleAcceptReq = async(userId) => {
+    try {
+      const { data } = await api.post('/api/user/accept', {id: userId}, {
+        headers: { Authorization: `Bearer ${await getToken()}` }
+      })
+      if (data.success) {
+        toast.success(data.message)
+        getToken().then((token) => {
+          dispatch(fetchConnections(token))
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response?.data?.message || "Something went wrong.")      
+    }
   }
-  const handleUnfollow = ()=>{
 
+  const handleUnfollow = async (userId) => {
+    try {
+      const { data } = await api.post('/api/user/unfollow', {id: userId}, {
+        headers: { Authorization: `Bearer ${await getToken()}` }
+      })
+      if (data.success) {
+        toast.success(data.message)
+        getToken().then((token) => {
+          dispatch(fetchConnections(token))
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response?.data?.message || "Something went wrong.")      
+    }
   }
 
-  return (
+  useEffect(() => {
+    getToken().then((token) => {
+      dispatch(fetchConnections(token))
+    })
+  }, [])
+
+  return connectionData ? (
     <div className=" bg-gradient-to-b from-slate-200 to-white h-screen overflow-y-scroll no-scrollbar">
       <div className="max-w-6xl p-6 mx-auto">
 
@@ -76,12 +116,12 @@ const Connections = () => {
               </button>}
 
               {/* Accept button  */}
-              {currentTab === "Pending" && <button onClick={handleAccept} className="flex items-center justify-center bg-slate-200 hover:bg-slate-300 w-full rounded py-2 gap-1 active:scale-95 transition">
+              {currentTab === "Pending" && <button onClick={()=>handleAcceptReq(user?._id)} className="flex items-center justify-center bg-slate-200 hover:bg-slate-300 w-full rounded py-2 gap-1 active:scale-95 transition">
                 <span>Accept</span>
               </button>}
 
               {/* unfollow button  */}
-              {currentTab === "Followings" && <button onClick={handleUnfollow} className="flex items-center justify-center bg-slate-200 hover:bg-slate-300 w-full rounded py-2 gap-1 active:scale-95 transition">
+              {currentTab === "Followings" && <button onClick={()=>handleUnfollow(user?._id)} className="flex items-center justify-center bg-slate-200 hover:bg-slate-300 w-full rounded py-2 gap-1 active:scale-95 transition">
                 <span>Unfollow</span>
               </button>}
             </div>
@@ -92,7 +132,7 @@ const Connections = () => {
       </div>
 
     </div>
-  )
+  ): <Loading/>
 }
 
 export default Connections

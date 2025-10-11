@@ -102,12 +102,10 @@ export const discoverUser = async (req, res) => {
                 {location : new RegExp(input, 'i')}
             ]
         })
-
         const filterUsers = allUsers.filter(user=> user._id !== userId)
 
-        
         return res.status(200).json({success: true, users: filterUsers})
-
+        
     } catch (error) {
         console.log(error)
         return res.status(500).json({success: false, message: error.message})
@@ -141,7 +139,7 @@ export const followUser = async (req, res) => {
 }
 
 export const unfollowUser = async (req, res) => {
-    try {
+    try { 
         const {userId} = req.auth();
         const {id} = req.body;
 
@@ -158,7 +156,7 @@ export const unfollowUser = async (req, res) => {
         toUser.followers = toUser.followers.filter(follower => follower !== userId)
         await toUser.save()
         
-        return res.status(200).json({success: true, message: "You are no longer following this user"})
+        return res.status(200).json({success: true, message: "Unfollowed "+ user.username})
 
     } catch (error) {
         console.log(error)
@@ -233,7 +231,7 @@ export const acceptConnection = async (req, res) => {
         connection.status = "accepted"
         await connection.save()
 
-        return res.status(200).json({success: true, message: "Connection accepted successfully"})
+        return res.status(200).json({success: true, message: "Become friends with "+ toUser.username})
 
     } catch (error) {
         console.log(error)
