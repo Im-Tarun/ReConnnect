@@ -5,10 +5,10 @@ import connectDB from './src/config/connectDB.js';
 import { serve } from "inngest/express";
 import { inngest, functions } from "./src/inngest/index.js"
 import { clerkMiddleware } from '@clerk/express'
-import userRouter from './src/Routes/user.route.js';
-import postRouter from './src/Routes/post.route.js';
-import storyRouter from './src/Routes/story.route.js';
-import messageRouter from './src/Routes/message.route.js';
+import userRouter from './src/routes/user.route.js';
+import postRouter from './src/routes/post.route.js';
+import storyRouter from './src/routes/story.route.js';
+import messageRouter from './src/routes/message.route.js';
 
 const app = express();
 const port = process.env.PORT || 3000
