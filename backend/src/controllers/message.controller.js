@@ -66,7 +66,7 @@ export const sendMessage = async (req, res) => {
     res.status(200).json({ success: true, newMessage });
 
     //send message using sse 
-    const messageWithUserdata = await MessageModel.findById(newMessage._id).populate("from_user_data");
+    const messageWithUserdata = await MessageModel.findById(newMessage._id).populate("from_user_id");
 
     if(connections[to_user_id]){
         connections[to_user_id].write(`data: ${JSON.stringify(messageWithUserdata)}\n\n`)

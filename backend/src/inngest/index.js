@@ -134,20 +134,28 @@ const connectionReminder = inngest.createFunction(
 );
 
 //ingest function to delete stroy from db after 24 hours 
-const deleteStory24Hour = inngest.createFunction(
-  {id : 'delete-story'},
-  {event: "app/story-delete"},
-  async ({event, step}) => {
-
-    const {storyId} = event.data
+export const deleteStory24Hour = inngest.createFunction(
+  { id: "delete-story" },
+  { event: "app/story-delete" },
+  async ({ event, step }) => {
+    const { storyId } = event.data
     const in24Hours = new Date(Date.now() + 24 * 60 * 60 * 1000)
+    const in60sec = new Date(Date.now() +  60 * 1000)
 
-    await step.sleepUntil("wait-24-hours", in24Hours)
-    await step.run("delete-story", async () => {
+    // Wait 24 hours
+    // await step.sleepUntil(in24Hours)
+    await step.sleepUntil(in60sec)
+
+    // Safely delete story
+    return await step.run("delete-story", async () => {
+      const story = await StoryModel.findById(storyId)
+      if (!story) {
+        return { message: "Story already deleted or not found." }
+      }
+
       await StoryModel.findByIdAndDelete(storyId)
-      return {message: "story deleted."}
+      return { message: `Story ${storyId} deleted after 24 hours.` }
     })
-
   }
 )
 

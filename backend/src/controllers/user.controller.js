@@ -245,9 +245,9 @@ export const getAllConnections = async (req, res) => {
         const {userId} = req.auth()
         const user = await User.findById(userId).populate('connections followers followings')
 
-        const connections = user.connections
-        const followers = user.followers
-        const followings = user.followings
+        const connections = user.connections || []
+        const followers = user.followers || []
+        const followings = user.followings || []
         
         // const pendingConnections = (await ConnectionModel.find({to_user_id: userId}).populate("from_user_id")).flatMap(req=>{
         //     if(req.status === "pending") return req.from_user_id 

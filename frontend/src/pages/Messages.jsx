@@ -1,9 +1,10 @@
 import { MessageSquare } from "lucide-react"
-import { dummyConnectionsData } from "../assets/assets"
 import { Link, useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 const Messages = () => {
   const navigate = useNavigate()
+  const {connections: friends} = useSelector(state=> state.connections)
 
   return (
     <div className="h-screen relative bg-gradient-to-b from-slate-200 to-white overflow-y-scroll  ">
@@ -16,11 +17,11 @@ const Messages = () => {
 
         {/* connect users chat  */}
         <div className="flex flex-col gap-4">
-          {dummyConnectionsData.map((conn, ind) => (
+          {friends?.map((conn, ind) => (
             <div key={ind} className="max-w-xl  p-4 rounded-md shadow-md bg-white">
               {/* porfile detail  */}
-              <div className="flex items-start  gap-4">
-                <img src={conn.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer" onClick={() => navigate(`/profile/` + conn._id)} />
+              <div className="flex items-start gap-4">
+                <img src={conn.profile_picture} alt="dp" className="size-12 rounded-full cursor-pointer object-cover" onClick={() => navigate(`/profile/` + conn._id)} />
                 <div className="flex-1 ">
                   <p onClick={() => navigate(`/profile/` + conn._id)} className="font-medium text-slate-700 cursor-pointer">{conn.full_name}</p>
                   <p className="text-slate-500 ">@{conn.username} </p>

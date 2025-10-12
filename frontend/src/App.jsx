@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
 import Login from "./pages/Login"
 import Feed from "./pages/Feed"
 import Messages from "./pages/Messages"
@@ -11,18 +11,20 @@ import {useAuth, useUser} from '@clerk/clerk-react'
 import Layout from "./pages/Layout"
 import Loading from "./components/Loading"
 import {Toaster} from 'react-hot-toast'
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch } from "react-redux"
 import { fetchUser } from "./features/user/userSlice.js"
 import { fetchConnections } from "./features/connections/connectionsSlice.js"
+import { addMessages } from "./features/messages/messagesSlice.js"
 
 const App = () => {
   const {isLoaded, user} = useUser()
   const {getToken} = useAuth()
   const dispatch = useDispatch()
+  const {pathname} = useLocation()
+  const pathnameRef = useRef(pathname)
 
   useEffect(() => {
-
     const fetchData = async () => {
        if(user){ 
         const token = await getToken()
@@ -33,6 +35,26 @@ const App = () => {
     fetchData()
 
   }, [user, getToken, dispatch])
+
+  useEffect(() => {
+    pathnameRef.current = pathname
+  }, [pathname])
+  
+  useEffect(() => {
+    if(user){
+      const eventSource = new EventSource(import.meta.env.VITE_BASEURL+ "/api/message/"+ user.id)
+      eventSource.onmessage = (event)=>{
+        const message = JSON.parse(event.data)
+        if(pathnameRef.current === ('/messages/'+ message.from_user_id._id)){
+          dispatch(addMessages(message))
+        }
+      }
+      return ()=>{
+        eventSource.close()
+      }
+    }
+  }, [user])
+  
   
 
   if( !isLoaded) {

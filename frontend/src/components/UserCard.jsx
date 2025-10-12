@@ -75,16 +75,16 @@ const UserCard = ({ user }) => {
             {/* follow friend  */}
             <div className="flex  gap-2">
                 <button onClick={()=>handleFollow(user?._id)} disabled={currentUser?.followings.includes(user?._id)} className={`flex items-center justify-center bg-slate-200 hover:bg-slate-300 flex-1 rounded-md py-3 active:scale-95 transition cursor-pointer ${currentUser?.followings.includes(user?._id) ? "text-black" : "bg-gradient-to-l from-indigo-500 to-purple-600 text-white "}`}>
-                    <UserPlus className="w-4 h-4 text-gray-700  " />
-                    <span className="px-1" >{currentUser?.followings.includes(user?._id) ? "Following" : "Follow"}</span>
+                    <UserPlus className="w-4 h-4  " />
+                    <span className="px-2" >{currentUser?.followings.includes(user?._id) ? "Following" : "Follow"}</span>
                 </button>
 
                 <button onClick={()=>handleFriendReq(user?._id)} className="flex flex-1 items-center justify-center bg-slate-200 hover:bg-slate-300 rounded-md py-3 px-5 active:scale-95 transition cursor-pointer bg-gradient-to-l from-indigo-500 to-purple-600 text-white">
                     { !currentUser?.connections.includes(user?._id) ? <>
                     <Plus className="w-4 h-4 text-white" /> 
-                    <span className="px-1">Friend</span>)</> : <>
+                    <span className="px-1">Friend</span></> : <>
                     <MessageCircle className="w-4 h-4 text-white"/>
-                    <span className="px-1">Message</span>
+                    <span className="px-2">Message</span>
                     </>}
                 </button> 
             </div>
