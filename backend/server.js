@@ -12,10 +12,7 @@ import messageRouter from './src/routes/message.route.js';
 
 const app = express();
 const port = process.env.PORT || 3000
-dotenv.config();
-
 app.use(cors({ origin: true, credentials: true }));
-
 
 app.use(express.json())
 app.use(clerkMiddleware())
