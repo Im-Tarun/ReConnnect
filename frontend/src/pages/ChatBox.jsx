@@ -50,12 +50,6 @@ const ChatBox = () => {
     }
   }, [userId, dispatch])
 
-  //scroll effect 
-  // useEffect(() => {
-  //   if (messages?.length && lastMsgRef.current) {
-  //     lastMsgRef.current.scrollIntoView({ behavior: "smooth", block:"end" })
-  //   }
-  // }, [messages])
 
 useLayoutEffect(() => {
   if (!messages?.length || !lastMsgRef.current) return;
@@ -99,7 +93,7 @@ useLayoutEffect(() => {
               <span className="text-xs text-slate-400 p-1 font-medium ">{moment(msg.createdAt).format("hh:mm A")}</span>
             </div>
           ))}
-          <div ref={lastMsgRef} ></div>
+          <p ref={lastMsgRef} ></p>
         </div>
       </div>
 

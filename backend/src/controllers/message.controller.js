@@ -33,75 +33,90 @@ export const sendMessage = async (req, res) => {
   try {
     const { userId } = req.auth();
     const { to_user_id, text } = req.body;
-    const image  = req.file;
+    const image = req.file;
 
     let media_url = "";
     const message_type = image ? "image" : "text";
 
     if (image) {
-        const buffer = fs.readFileSync(image.path);
-        const response = await imagekit.upload({
-            file: buffer,
-            fileName: image.originalname,
-            folder: "posts",
-        });
-        media_url = imagekit.url({
-            path: response.filePath,
-            transformation: [
-            { quality: "auto" },
-            { format: "webp" },
-            { width: "1280" },
-            ],
-        });
+      const buffer = fs.readFileSync(image.path);
+      const response = await imagekit.upload({
+        file: buffer,
+        fileName: image.originalname,
+        folder: "posts",
+      });
+      media_url = imagekit.url({
+        path: response.filePath,
+        transformation: [
+          { quality: "auto" },
+          { format: "webp" },
+          { width: "1280" },
+        ],
+      });
     }
 
     const newMessage = await MessageModel.create({
-        from_user_id: userId,
-        to_user_id,
-        text,
-        message_type,
-        media_url
-    })
+      from_user_id: userId,
+      to_user_id,
+      text,
+      message_type,
+      media_url,
+    });
 
     res.status(200).json({ success: true, newMessage });
 
-    //send message using sse 
-    const messageWithUserdata = await MessageModel.findById(newMessage._id).populate("from_user_id");
+    //send message using sse
+    const messageWithUserdata = await MessageModel.findById(
+      newMessage._id
+    ).populate("from_user_id");
 
-    if(connections[to_user_id]){
-        connections[to_user_id].write(`data: ${JSON.stringify(messageWithUserdata)}\n\n`)
+    if (connections[to_user_id]) {
+      connections[to_user_id].write(
+        `data: ${JSON.stringify(messageWithUserdata)}\n\n`
+      );
     }
-
-
   } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: error.message });
-    }
+    console.log(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// get messages 
-export const getchatMessages = async (req, res ) => {
-    try {
-        const {userId} = req.auth()
-        const {to_user_id} = req.body
+// get messages
+export const getchatMessages = async (req, res) => {
+  try {
+    const { userId } = req.auth();
+    const { to_user_id } = req.body;
 
-        const messages = await MessageModel.find({
-            $or: [
-                {from_user_id: userId, to_user_id},
-                {from_user_id: to_user_id, to_user_id: userId}
-            ]
-        }).sort({createdAt : -1})
+    const messages = await MessageModel.find({
+      $or: [
+        { from_user_id: userId, to_user_id },
+        { from_user_id: to_user_id, to_user_id: userId },
+      ],
+    }).sort({ createdAt: -1 });
 
-        //mark as seen
-        await MessageModel.updateMany({from_user_id: to_user_id, to_user_id: userId}, {seen: true})
+    //mark as seen
+    await MessageModel.updateMany(
+      { from_user_id: to_user_id, to_user_id: userId },
+      { seen: true }
+    );
 
-        return res.status(200).json({success: true , messages})
-        
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: error.message });
-    }
-    
-}
+    return res.status(200).json({ success: true, messages });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
+export const getRecentMessages = async (req, res) => {3
+  try {
+    const { userId } = req.auth();
+    const messages = await MessageModel.find({ to_user_id: userId })
+      .populate("from_user_id to_user_id")
+      .sort({ createdAt: -1 });
 
+    return res.status(200).json({ success: true, messages });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};

@@ -2,7 +2,6 @@ import { BadgeCheck, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-
 const StoryViewer = ({ setViewStory, viewStory }) => {
     if (!viewStory) return null
 
@@ -14,7 +13,7 @@ const StoryViewer = ({ setViewStory, viewStory }) => {
 
         if (viewStory.media_type !== 'video') {
             setProgressBar(0)
-            const duration = 8_000;
+            const duration = 6_000;
             const setTime = 100;
             let progress = 0;
 
