@@ -7,7 +7,7 @@ const Login = () => {
         <main className="flex justify-evenly flex-col md:flex-row items-center relative min-h-screen w-full ">
             <img src={assets.bgImage} alt="background-Image" className="absolute top-0 left-0 -z-10 w-full h-full object-cover " />
             <div className="fixed bg-white/10 backdrop-blur-sm top-0 w-full px-8 pt-2 ">
-                <img src={assets.logo} alt="logo" className="h-12 object-contain " />
+                <img src={assets.logo} alt="logo" className="h-10 object-contain mt-2" />
             </div>
 
             {/* left intro  */}
