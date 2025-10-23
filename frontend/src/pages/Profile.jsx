@@ -38,6 +38,21 @@ const Profile = () => {
     }
   }
 
+  const handleDeletePost = async (postId) => {
+        try {
+            const {data} = await api.post("/api/post/delete",{postId},{
+                headers:{Authorization:`Bearer ${await getToken()}`}
+            })
+            if(data.success){
+                toast.success(data.message)
+                setPosts(posts.filter(elem=>elem._id !== postId))
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
+    }
+
   useEffect(() => {
     const loadProfile = async () => {
       if (!getToken) return; // make sure Clerk is ready
@@ -56,7 +71,7 @@ const Profile = () => {
       <div className="max-w-3xl mx-auto" >
 
         {/* user profile  */}
-        <UserProfileInfo user={user} profileId={profileId} posts={posts} setShowEdit={setShowEdit} />
+        <UserProfileInfo user={user} profileId={profileId} posts={posts} setShowEdit={setShowEdit}  />
 
         {/* tabs */}
         <div className="mt-6 w-full">
@@ -71,7 +86,7 @@ const Profile = () => {
 
         {activeTab === "posts" && <div className="mt-6 flex flex-col gap-4 items-center">
           {posts.map((post, ind) => (
-            <PostCard post={post} key={ind} />
+            <PostCard post={post} key={ind} showDelete handleDeletePost={handleDeletePost} />
           ))}
         </div>}
 

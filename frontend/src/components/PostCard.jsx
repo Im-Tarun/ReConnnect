@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/clerk-react";
-import { BadgeCheck, Dot, Heart, MessageCircle, Share2 } from "lucide-react";
+import { BadgeCheck, Dot, Heart, MessageCircle, Share2, SquareX } from "lucide-react";
 import moment from "moment";
 import { useState } from "react"; 
 import { useSelector } from "react-redux";
@@ -8,8 +8,9 @@ import api from "../api/axios.js";
 import toast from "react-hot-toast";
 
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, showDelete, handleDeletePost }) => {
 
+    const [showConfirmDelete, setshowConfirmDelete] = useState(false)
     const [likes, setLikes] = useState(post.likes_count)
     const currentUser = useSelector((state)=> state.user.value);
     const hastagContent = post.content?.split(/(#\w+)/g);
@@ -23,7 +24,6 @@ const PostCard = ({ post }) => {
             if(data.success){
                 toast.success(data.message)
                 setLikes(prevItems=> prevItems.includes(currentUser._id) ? prevItems.filter(elem => elem !== currentUser._id ) : [...prevItems, currentUser._id])
-
             }
         } catch (error) {
             console.log(error)
@@ -31,10 +31,11 @@ const PostCard = ({ post }) => {
         }
     }
 
+    
     const navigate = useNavigate()
 
     return (
-        <div className="bg-white rounded-xl shadow p-4 w-full max-w-2xl space-y-4">
+        <div className="bg-white rounded-xl shadow p-4 w-full max-w-2xl space-y-4  relative">
             {/* userinfo */}
             <div className="inline-flex items-center gap-3 cursor-pointer" onClick={()=>navigate("/profile/"+post.user?._id)}>
                 <img src={post.user?.profile_picture} alt="dp" className="h-10 w-10 rounded-full object-cover" />
@@ -46,6 +47,16 @@ const PostCard = ({ post }) => {
                     <div className="text-gray-500 text-sm inline-flex items-center">@{post.user?.username} <Dot /> {moment(post.createdAt).fromNow()} </div>
                 </div>
             </div>
+            {showDelete && <button className="absolute top-4 right-4" onClick={()=>setshowConfirmDelete(true)}>
+                <SquareX className="size-8 hover:text-[#e2002d] hover:scale-105 text-gray-600 cursor-pointer"/>
+            </button>}
+            {showConfirmDelete && <div className=" absolute inset-0  rounded-xl mb-0 bg-black/45 flex items-center justify-center gap-4 ">
+                <button className="px-6 py-2  rounded-md bg-amber-100 active:scale-95 " onClick={()=>setshowConfirmDelete(false)}>Cancel</button>
+                <button className="px-6 py-2 text-white rounded-md  active:scale-95 bg-indigo-700" onClick={()=>{
+                    handleDeletePost(post._id)
+                    setshowConfirmDelete(false)
+                }}>Delete</button>
+            </div>}
 
             {/* post content  */}
             {post.content && <p className="text-gray-800 ">
