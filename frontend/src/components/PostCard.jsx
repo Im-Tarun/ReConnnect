@@ -8,7 +8,7 @@ import api from "../api/axios.js";
 import toast from "react-hot-toast";
 
 
-const PostCard = ({ post, showDelete, handleDeletePost }) => {
+const PostCard = ({ post, showDelete, handleDeletePost ,profileId }) => {
 
     const [showConfirmDelete, setshowConfirmDelete] = useState(false)
     const [likes, setLikes] = useState(post.likes_count)
@@ -47,7 +47,7 @@ const PostCard = ({ post, showDelete, handleDeletePost }) => {
                     <div className="text-gray-500 text-sm inline-flex items-center">@{post.user?.username} <Dot /> {moment(post.createdAt).fromNow()} </div>
                 </div>
             </div>
-            {showDelete && <button className="absolute top-4 right-4" onClick={()=>setshowConfirmDelete(true)}>
+            {showDelete && !profileId && <button className="absolute top-4 right-4" onClick={()=>setshowConfirmDelete(true)}>
                 <SquareX className="size-8 hover:text-[#e2002d] hover:scale-105 text-gray-600 cursor-pointer"/>
             </button>}
             {showConfirmDelete && <div className=" absolute inset-0  rounded-xl mb-0 bg-black/45 flex items-center justify-center gap-4 ">

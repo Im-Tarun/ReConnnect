@@ -10,48 +10,48 @@ import toast from "react-hot-toast"
 import { useSelector } from "react-redux"
 
 const Profile = () => {
-  const currentUser = useSelector((state)=> state.user.value)
-  
+  const currentUser = useSelector((state) => state.user.value)
+
   const { profileId } = useParams()
   const [user, setUser] = useState(null)
   const [activeTab, setActiveTab] = useState('posts')
   const [posts, setPosts] = useState([])
   const [showEdit, setShowEdit] = useState(false)
-  const {getToken} = useAuth()
+  const { getToken } = useAuth()
 
   const fetchUserPost = async (profileId) => {
     const token = await getToken()
     try {
-      const {data} = await api.post('/api/user/profile', {profileId} ,{
-        headers: {Authorization: `Bearer ${token}`}
+      const { data } = await api.post('/api/user/profile', { profileId }, {
+        headers: { Authorization: `Bearer ${token}` }
       })
-      if(data.success){
+      if (data.success) {
         setUser(data.profile)
         setPosts(data.posts)
-      }else{
+      } else {
         toast.error(data.message)
       }
-      
+
     } catch (error) {
       console.log(error)
-      toast.error(error.message)
+      toast.error(error.response.data.message || "error occurred")
     }
   }
 
   const handleDeletePost = async (postId) => {
-        try {
-            const {data} = await api.post("/api/post/delete",{postId},{
-                headers:{Authorization:`Bearer ${await getToken()}`}
-            })
-            if(data.success){
-                toast.success(data.message)
-                setPosts(posts.filter(elem=>elem._id !== postId))
-            }
-        } catch (error) {
-            console.log(error)
-            toast.error(error.message)
-        }
+    try {
+      const { data } = await api.post("/api/post/delete", { postId }, {
+        headers: { Authorization: `Bearer ${await getToken()}` }
+      })
+      if (data.success) {
+        toast.success(data.message)
+        setPosts(posts.filter(post => post._id !== postId))
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response.data.message || "error occurred")
     }
+  }
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -71,7 +71,7 @@ const Profile = () => {
       <div className="max-w-3xl mx-auto" >
 
         {/* user profile  */}
-        <UserProfileInfo user={user} profileId={profileId} posts={posts} setShowEdit={setShowEdit}  />
+        <UserProfileInfo user={user} profileId={profileId} posts={posts} setShowEdit={setShowEdit} />
 
         {/* tabs */}
         <div className="mt-6 w-full">
@@ -86,7 +86,7 @@ const Profile = () => {
 
         {activeTab === "posts" && <div className="mt-6 flex flex-col gap-4 items-center">
           {posts.map((post, ind) => (
-            <PostCard post={post} key={ind} showDelete handleDeletePost={handleDeletePost} />
+            <PostCard post={post} key={ind} showDelete={true} handleDeletePost={handleDeletePost} profileId={profileId} />
           ))}
         </div>}
 
@@ -103,7 +103,7 @@ const Profile = () => {
         </div>}
       </div>
 
-      {showEdit && <EditProfile setShowEdit={setShowEdit} /> }
+      {showEdit && <EditProfile setShowEdit={setShowEdit} />}
     </div>
   )
 }
