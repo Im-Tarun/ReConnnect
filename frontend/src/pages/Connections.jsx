@@ -64,7 +64,7 @@ const Connections = () => {
   }, [])
 
   return connectionData ? (
-    <div className=" bg-gradient-to-b from-slate-200 to-white h-screen overflow-y-scroll no-scrollbar">
+    <div className=" bg-gradient-to-b from-slate-200 to-white h-dynamic overflow-y-scroll no-scrollbar">
       <div className="max-w-6xl p-6 mx-auto">
 
         {/* heading  */}

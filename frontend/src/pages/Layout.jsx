@@ -8,7 +8,7 @@ const Layout = () => {
   const [sidebarBtn, setSidebarBtn] = useState(false)
 
   return (
-    <div className=" h-screen flex relative ">
+    <div className="h-dynamic flex relative ">
       <SideBar sidebarBtn={sidebarBtn} setSidebarBtn={setSidebarBtn} />
       <div className="bg-slate-100 flex-1">
       <Outlet />

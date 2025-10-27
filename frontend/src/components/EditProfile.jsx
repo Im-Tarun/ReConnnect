@@ -44,7 +44,7 @@ const EditProfile = ({ setShowEdit }) => {
     }
 
     return (
-        <div className="fixed inset-0 z-110 min-h-screen overflow-y-scroll no-scrollbar p-2 sm:p-6 bg-black/80 backdrop-blur ">
+        <div className="fixed inset-0 z-110 min-h-dynamic overflow-y-scroll no-scrollbar p-2 sm:p-6 bg-black/80 backdrop-blur ">
             <div className=" max-w-2xl mx-auto  bg-white rounded-lg p-4 sm:p-6" >
                 <h1 className="text-2xl font-bold text-slate-900 mb-4">Edit Profile</h1>
                 <form className="space-y-6" onSubmit={(e) => toast.promise(handleUpdateProfile(e), {

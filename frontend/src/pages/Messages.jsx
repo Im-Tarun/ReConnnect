@@ -7,7 +7,7 @@ const Messages = () => {
   const {connections: friends} = useSelector(state=> state.connections)
 
   return (
-    <div className="h-screen relative bg-gradient-to-b from-slate-200 to-white overflow-y-scroll  ">
+    <div className="h-dynamic relative bg-gradient-to-b from-slate-200 to-white overflow-y-scroll  ">
       <div className="max-w-6xl mx-auto p-6">
         {/* title */}
         <div className="mb-6">

@@ -5,8 +5,6 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useAuth } from "@clerk/clerk-react";
 import api from "../api/axios.js";
-import axios from "axios";
-
 
 const CreatePost = () => {
   const [content, setContent] = useState('')
@@ -46,7 +44,7 @@ const CreatePost = () => {
 
 
   return (
-    <div className="bg-gradient-to-b from-slate-200 to-white min-h-screen">
+    <div className="bg-gradient-to-b from-slate-200 to-white min-h-dynamic">
       <div className="max-w-6xl mx-auto p-6">
         {/* title */}
         <div className="mb-6">

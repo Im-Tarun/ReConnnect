@@ -78,7 +78,7 @@ const CreateStory = ({ setshowCreateStory, fetchStories }) => {
     }
 
     return (
-        <div className="fixed inset-0 z-110 min-h-screen bg-black/80 backdrop-blur text-white flex items-center justify-center p-4 ">
+        <div className="fixed inset-0 z-110 min-h-dynamic bg-black/80 backdrop-blur text-white flex items-center justify-center p-4 ">
             {/* container */}
             <div className="w-full max-w-md space-y-3">
                 {/* header  */}

@@ -9,7 +9,7 @@ const SideBar = ({sidebarBtn, setSidebarBtn}) => {
   const user = useSelector((state)=> state.user.value)
 
   return (
-    <div className={`max-w-60 xl:w-72 bg-white border-r border-gray-300 flex flex-col justify-between items-center sm:h-screen max-sm:absolute top-0 bottom-0 z-20 ${sidebarBtn? 'max-sm:translate-x-0' : 'max-sm:-translate-x-full'} transition-all duration-400 ease-in-out`}>
+    <div className={`max-w-60 xl:w-72 bg-white border-r border-gray-300 flex flex-col justify-between items-center sm:h-dynamic max-sm:absolute top-0 bottom-0 z-20 ${sidebarBtn? 'max-sm:translate-x-0' : 'max-sm:-translate-x-full'} transition-all duration-400 ease-in-out`}>
       <div className="w-full">
           <img src={assets.logo} alt="logo" className="w-50 m-4 cursor-pointer" />
           <hr className="border-gray-300 mb-8"/>

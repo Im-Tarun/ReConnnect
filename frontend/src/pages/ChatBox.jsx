@@ -71,7 +71,7 @@ useLayoutEffect(() => {
   
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-dynamic">
       {/* header */}
       <div className="flex items-center gap-2 px-2 py-[4.7px] md:px-10 xl:pl-32  bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-300">
         <img src={user?.profile_picture} alt="dp" className="size-8 rounded-full object-cover cursor-pointer" />

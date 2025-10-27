@@ -40,7 +40,7 @@ const Discover = () => {
   
 
   return (
-    <div className="h-screen overflow-y-scroll no-scrollbar bg-gradient-to-b from-slate-200 to-white">
+    <div className="h-dynamic overflow-y-scroll no-scrollbar bg-gradient-to-b from-slate-200 to-white">
       <div className="max-w-6xl p-6 mx-auto ">
 
         {/* heading  */}
