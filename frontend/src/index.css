@@ -29,4 +29,7 @@ html,body{
   /* Or use modern CSS if supported */
   /* height: 100dvh; */
 }
+.min-h-dynamic {
+  min-height: calc(var(--vh, 1vh) * 100);
+}
 

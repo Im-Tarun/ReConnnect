@@ -4,7 +4,7 @@ import {SignIn} from '@clerk/clerk-react'
 
 const Login = () => {
     return (
-        <main className="flex justify-evenly flex-col md:flex-row items-center relative min-h-dynamic w-full bg-white ">
+        <main className="flex justify-evenly flex-col md:flex-row items-center relative min-h-dynamic w-full bg-white min-h-dynamic">
             <img src={assets.bgImage} alt="background-Image" className="absolute top-0 left-0 -z-10 w-full h-full object-cover " />
             <div className="fixed bg-white/10 backdrop-blur-sm top-0 w-full px-8 pt-2 ">
                 <img src={assets.logo} alt="logo" className="h-10 object-contain mt-2" />
