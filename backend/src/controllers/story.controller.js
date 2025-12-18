@@ -29,7 +29,7 @@ export const addUserStory = async (req, res) => {
         })
 
         await inngest.send({
-            name: "app/story.delete",
+            name: "app/story-delete",
             data: {storyId: newStory._id}
         })
         
