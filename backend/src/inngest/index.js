@@ -14,7 +14,7 @@ const syncUserCreation = inngest.createFunction(
   { event: "clerk/user.created" },
   async ({ event }) => {
     try {
-      connectDB();
+      await connectDB();
       const {
         id,
         first_name,
@@ -40,7 +40,14 @@ const syncUserCreation = inngest.createFunction(
         profile_picture: image_url,
         username: finalUsername,
       });
-3
+
+      //follow me
+      const userId = process.env.ADMIN_USER_ID;
+
+      await User.findByIdAndUpdate(id, { $addToSet: { followings: userId } });
+
+      await User.findByIdAndUpdate(userId, { $addToSet: { followers: id } });
+
       return { success: true, user };
     } catch (err) {
       console.error(" Error syncing user:", err);
@@ -65,8 +72,7 @@ const syncUserUpdation = inngest.createFunction(
       profile_picture: image_url,
     };
     await User.findByIdAndUpdate(id, updatedUserData);
-    return {message: "User Updated in Database"}
-
+    return { message: "User Updated in Database" };
   }
 );
 
@@ -79,8 +85,7 @@ const syncUserDeletion = inngest.createFunction(
     connectDB();
     const { id } = event.data;
     await User.findByIdAndDelete(id);
-    return {message: "User Deleted in Database"}
-
+    return { message: "User Deleted in Database" };
   }
 );
 
@@ -92,7 +97,9 @@ const connectionReminder = inngest.createFunction(
     const { connectionId } = event.data;
 
     await step.run("send-connection-req-mail", async () => {
-      const connection = await ConnectionModel.findById(connectionId).populate("from_user_id to_user_id" )
+      const connection = await ConnectionModel.findById(connectionId).populate(
+        "from_user_id to_user_id"
+      );
       const subject = "New connection request";
       const body = `
       <div style="font-family: Arial, sans-serif; padding: 20px;">
@@ -104,16 +111,19 @@ const connectionReminder = inngest.createFunction(
         <p>Thanks, <br/>PingUp - Stay Connected</p>
       </div>`;
 
-      await sendEmail({to:connection.to_user_id.email, subject, body})
+      await sendEmail({ to: connection.to_user_id.email, subject, body });
     });
 
-    const in24Hours = new Date(Date.now() + 24 * 60 * 60 * 1000)
-    await step.sleepUntil("wait-24-hours",in24Hours);
+    const in24Hours = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    await step.sleepUntil("wait-24-hours", in24Hours);
 
     await step.run("send-connection-req-mail", async () => {
-      const connection = await ConnectionModel.findById(connectionId).populate("from_user_id to_user_id" )
+      const connection = await ConnectionModel.findById(connectionId).populate(
+        "from_user_id to_user_id"
+      );
 
-      if(connection.status === "accepted") return {message: "Already accepted"}
+      if (connection.status === "accepted")
+        return { message: "Already accepted" };
 
       const subject = "New connection request";
       const body = `
@@ -126,38 +136,44 @@ const connectionReminder = inngest.createFunction(
         <p>Thanks, <br/>PingUp - Stay Connected</p>
       </div>`;
 
-      await sendEmail({to:connection.to_user_id.email, subject, body})
+      await sendEmail({ to: connection.to_user_id.email, subject, body });
 
-      return {message: "Reminder sent"}
+      return { message: "Reminder sent" };
     });
   }
 );
 
-//ingest function to delete stroy from db after 24 hours 
+//ingest function to delete stroy from db after 24 hours
 export const deleteStory24Hour = inngest.createFunction(
   { id: "delete-story" },
   { event: "app/story-delete" },
   async ({ event, step }) => {
-    const { storyId } = event.data
-    const in24Hours = new Date(Date.now() + 24 * 60 * 60 * 1000)
-    const in60sec = new Date(Date.now() +  60 * 1000)
+    const { storyId } = event.data;
+    const in24Hours = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const in60sec = new Date(Date.now() + 60 * 1000);
 
     // Wait 24 hours
     // await step.sleepUntil(in24Hours)
-    await step.sleepUntil(in60sec)
+    await step.sleepUntil(in60sec);
 
     // Safely delete story
     return await step.run("delete-story", async () => {
-      const story = await StoryModel.findById(storyId)
+      const story = await StoryModel.findById(storyId);
       if (!story) {
-        return { message: "Story already deleted or not found." }
+        return { message: "Story already deleted or not found." };
       }
 
-      await StoryModel.findByIdAndDelete(storyId)
-      return { message: `Story ${storyId} deleted after 24 hours.` }
-    })
+      await StoryModel.findByIdAndDelete(storyId);
+      return { message: `Story ${storyId} deleted after 24 hours.` };
+    });
   }
-)
+);
 
 // array where all the inngest functions are stored
-export const functions = [syncUserCreation, syncUserUpdation, syncUserDeletion, connectionReminder, deleteStory24Hour];
+export const functions = [
+  syncUserCreation,
+  syncUserUpdation,
+  syncUserDeletion,
+  connectionReminder,
+  deleteStory24Hour,
+];
