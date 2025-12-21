@@ -1,29 +1,78 @@
-# ReConnect
+# ReConnect – Social Media & Messaging Platform
 
-ReConnect is a full-stack social media web application built with the MERN stack (MongoDB, Express.js, React, Node.js). It allows users to connect, share posts, interact with others, and build their own social network.
+ReConnect is a full-stack social media application built using the **MERN stack**, focused on real-time interaction, media sharing, and user connections.  
+It supports posts, stories, friends, messaging, notifications, and background workflows using modern backend patterns.
+
+---
 
 ## Features
 
-- **User Authentication (Clerk):** Sign up, sign in, and session management are handled with Clerk (Clerk frontend SDK in React and server-side verification on the backend).
-- **Profile Management:** Edit profile details, upload profile pictures, and view other users' profiles.
-- **Posts:** Create, edit, delete, and view posts with text and images.
-- **Feed:** See a timeline of posts from users you follow.
-- **Likes & Comments:** Like posts and add comments to interact with others.
-- **Follow System:** Follow/unfollow users to curate your feed.
-- **Notifications:** Get notified about new followers, likes, and comments.
-- **Email sending (Nodemailer):** Transactional emails (verification, password reset, notifications) sent from the backend via Nodemailer or a provider.
-- **Background jobs (Ingest / worker):** Long-running tasks (email retries, media processing, notification fan-out) are handled by background workers or a managed Ingest workflow.
-- **Responsive Design:** Works well on both desktop and mobile devices.
+- Secure authentication and account management using **Clerk**
+- Create, delete, and view posts with support for **multiple images**
+- Personalized feed based on followed users
+- Friend request system with accept/reject workflow
+- **Private messaging** enabled after mutual friendship
+- Real-time messaging and in-app notifications using **Server-Sent Events (SSE)**
+- Email notifications for friend requests and reminders
+- Stories with text, images, and videos
+- Automatic story deletion after 24 hours using **Inngest**
+- Profile management (name, bio, profile picture, cover image)
+- Optimized image and video uploads using **ImageKit**
 
-## Getting Started
+---
 
-Follow these steps to run ReConnect on your local machine.
+## Tech Stack
+
+### Frontend
+- React (Vite)
+- Redux Toolkit
+- React Router DOM
+- Tailwind CSS
+- Clerk (Authentication)
+- Axios
+- React Hot Toast
+- Lucide React
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB & Mongoose
+- Clerk Express SDK
+- Inngest (Background Jobs)
+- ImageKit (Media Storage)
+- Nodemailer (Email Notifications)
+- Multer
+- Server-Sent Events (SSE)
+
+---
+
+## Architecture Overview
+
+- **REST APIs** for CRUD operations (users, posts, friends, profiles)
+- **SSE** for real-time messaging and notifications
+- **Inngest** for delayed and background tasks
+- **ImageKit** for efficient media upload and delivery
+- **MongoDB** for scalable data storage
+
+---
+
+## Authentication & Security
+
+- Authentication handled by Clerk
+- Protected backend routes using Clerk middleware
+- Secure user data synchronization with MongoDB
+- Environment-based configuration using dotenv
+
+---
+
+## Installation & Setup
 
 ### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v14 or higher)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- [MongoDB](https://www.mongodb.com/) (local or cloud instance)
+- Node.js (v18+ recommended)
+- MongoDB
+- Clerk account
+- ImageKit account
+- Inngest account
 
 ### Installation
 
@@ -45,61 +94,29 @@ Follow these steps to run ReConnect on your local machine.
    npm install
    ```
 
-4. **Set up environment variables:**
-   - Copy `.env.example` to `.env` in both `backend` and `frontend` folders.
-   - Fill in the required values (e.g., MongoDB URI, Clerk keys, etc.).
-   - Important env vars:
-     - Clerk: `CLERK_FRONTEND_API`, `CLERK_API_KEY` (and any Clerk-specific settings)
-     - Email (Nodemailer / SMTP): `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `NODEMAILER_FROM`
-     - Background jobs (Ingest / worker): `INGEST_API_KEY`, `INGEST_WORKER_URL` (or local worker settings)
-     - Worker/queue settings (optional): `WORKER_CONCURRENCY`, `REDIS_URL` (if used)
+### Environment Variables
 
-5. **Start MongoDB:**
-   - Make sure your MongoDB server is running locally or update the connection string for a remote database.
+- Create .env files in frontend and backend directories and configure:
+- Clerk API keys
+- MongoDB connection URI
+- ImageKit credentials
+- Email service credentials
+- Inngest keys
 
-6. **Run the backend server:**
-   ```bash
-   cd ../backend
-   npm start
-   ```
+### Future Improvements
 
-6a. **Run background worker (if using local worker):**
-   - If your project includes a worker script or npm task, start it alongside the backend. Example:
-   ```bash
-   # from backend folder
-   npm run worker         # or: node worker.js
-   ```
-   - For hosted Ingest workers, ensure `INGEST_API_KEY` / `INGEST_WORKER_URL` are set and follow your provider's deploy docs.
+- Read receipts and typing indicators
+- Push notifications
+- Search functionality
+- Group chats
+- Performance optimization for large feeds
 
-7. **Run the frontend app:**
-   ```bash
-   cd ../frontend
-   npm start
-   ```
+### License
 
-8. **Access the app:**
-   - Open your browser and go to `http://localhost:3000`
+- This project is for learning and portfolio purposes.
 
-## Folder Structure
+### Author
 
-```
-ReConnect/
-  backend/    # Express.js API and server code
-  frontend/   # React.js client application
-  README.md
-```
-
-## Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-
-This project is licensed under the MIT License.
-
-## Environment & Deployment notes
-
-- Keep all secret keys out of VCS. Use `.env` locally, and secret managers (Vault, GitHub Secrets, Vercel/Netlify/Heroku config) in production.
-- For email in production, prefer a transactional email provider (SendGrid/Mailgun/Postmark) or properly configured SMTP with rate limits.
-- Monitor background jobs and add alerting for failed job rates and worker health.
-
+- Tarun Yaduwanshi
+- Full-Stack Web Developer
+- GitHub: https://github.com/Im-Tarun
