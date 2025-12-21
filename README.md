@@ -1,4 +1,4 @@
-## [ReConnect – Social Media Platform ( Live Link )](https://re-connnect-vk68.vercel.app/)
+# [ReConnect – Social Media Platform ( Live Link )](https://re-connnect-vk68.vercel.app/)
 
 ReConnect is a full-stack social media application built using the **MERN stack**, focused on real-time interaction, media sharing, and user connections.  
 It supports posts, stories, friends, messaging, notifications, and background workflows using modern backend patterns.
